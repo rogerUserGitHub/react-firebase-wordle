@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
+import { AutoTabProvider } from 'react-auto-tab';
 
 const style = {
   row: `flex`,
@@ -14,18 +15,21 @@ const style = {
 
 const Attempt = ({ word, guess, isGuessed, setStyling }) => {
   const [attempt, setAttempt] = useState([]);
+  const [lastAttempt, setLastAttempt] = useState([]);
+  const [gameFinished, setGameFinished] = useState(false);
   const [styleChange, setStyleChange] = useState([]);
 
   const [disableRow1, setDisableRow1] = useState(false);
-  const [disableRow2, setDisableRow2] = useState(false);
-  const [disableRow3, setDisableRow3] = useState(false);
-  const [disableRow4, setDisableRow4] = useState(false);
-  const [disableRow5, setDisableRow5] = useState(false);
-  const [disableRow6, setDisableRow6] = useState(false);
+  const [disableRow2, setDisableRow2] = useState(true);
+  const [disableRow3, setDisableRow3] = useState(true);
+  const [disableRow4, setDisableRow4] = useState(true);
+  const [disableRow5, setDisableRow5] = useState(true);
+  const [disableRow6, setDisableRow6] = useState(true);
 
   const stringLetters = word.split('');
 
-  console.log(attempt);
+  console.log(styleChange);
+  console.log(lastAttempt);
 
   const handleInput = (letterInput, index) => {
     let arrayOfInputLetters = [...attempt];
@@ -39,27 +43,26 @@ const Attempt = ({ word, guess, isGuessed, setStyling }) => {
     switch (arrayOfInputLetters.length) {
       case 5:
         checkMatch(arrayOfInputLetters);
-        setDisableRow1(true);
+        setDisableRow2(false);
         break;
       case 10:
         checkMatch(arrayOfInputLetters);
-        setDisableRow2(true);
+        setDisableRow3(false);
         break;
       case 15:
         checkMatch(arrayOfInputLetters);
-        setDisableRow3(true);
+        setDisableRow4(false);
         break;
       case 20:
         checkMatch(arrayOfInputLetters);
-        setDisableRow4(true);
+        setDisableRow5(false);
         break;
       case 25:
         checkMatch(arrayOfInputLetters);
-        setDisableRow5(true);
+        setDisableRow6(false);
         break;
       case 30:
         checkMatch(arrayOfInputLetters);
-        setDisableRow6(true);
         break;
     }
   };
@@ -70,7 +73,7 @@ const Attempt = ({ word, guess, isGuessed, setStyling }) => {
     let teller = 0;
 
     for (let i = 0; i < array.length; i++) {
-      // required, otherwise word lenght will be out of bounds
+      // teller required, otherwise word lenght will be out of bounds
       if (teller === 5) {
         teller = 0;
       }
@@ -109,9 +112,20 @@ const Attempt = ({ word, guess, isGuessed, setStyling }) => {
   /*
    * side effects
    */
-  //   useEffect(() => {
-  //     console.log('trigg');
-  //   }, [styleChange]);
+  useEffect(() => {
+    if (styleChange?.length > 5) {
+      setLastAttempt(styleChange?.slice(-5));
+    } else {
+      setLastAttempt(styleChange);
+    }
+  }, [styleChange]);
+
+  useEffect(() => {
+    if (lastAttempt.filter(v => v === 'green').length === 5) {
+      setGameFinished(true);
+      console.log('finished');
+    }
+  }, [lastAttempt]);
 
   /*
    * render
