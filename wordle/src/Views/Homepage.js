@@ -35,6 +35,13 @@ const Homepage = () => {
   const [input, setInput] = useState('');
   const { user, logout } = UserAuth();
 
+  const [guess1, setGuess1] = useState();
+
+  const setStyling = color => {
+    if (color === 'green') {
+    }
+  };
+
   const createTodo = async e => {
     // prevent page reload
     e.preventDefault(e);
@@ -88,7 +95,12 @@ const Homepage = () => {
         <div className={style.container}>
           <h2 className={style.welcome}>Welcome {user.email}</h2>
           <h3 className={style.heading}>Wordle</h3>
-          <Attempt word={'tests'} guess={'guess'} isGuessed={false} />
+          <Attempt
+            word={'tests'}
+            guess={'guess'}
+            isGuessed={false}
+            setStyling={setStyling}
+          />
         </div>
         <div className={style.container2}>
           <button className={style.logoutButton} onClick={logout}>
