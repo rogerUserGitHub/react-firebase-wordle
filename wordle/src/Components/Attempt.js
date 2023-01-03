@@ -25,6 +25,8 @@ const Attempt = ({ word, guess, isGuessed, setStyling }) => {
 
   const stringLetters = word.split('');
 
+  console.log(attempt);
+
   const handleInput = (letterInput, index) => {
     let arrayOfInputLetters = [...attempt];
 
@@ -33,30 +35,58 @@ const Attempt = ({ word, guess, isGuessed, setStyling }) => {
     }
     setAttempt(arrayOfInputLetters);
 
-    if (arrayOfInputLetters.length === 5) {
-      checkMatch(arrayOfInputLetters);
-      setDisableRow1(true);
-    }
-    if (arrayOfInputLetters.length === 10) {
-      console.log('spring in 10');
-      checkMatch(arrayOfInputLetters);
+    // eslint-disable-next-line default-case
+    switch (arrayOfInputLetters.length) {
+      case 5:
+        checkMatch(arrayOfInputLetters);
+        setDisableRow1(true);
+        break;
+      case 10:
+        checkMatch(arrayOfInputLetters);
+        setDisableRow2(true);
+        break;
+      case 15:
+        checkMatch(arrayOfInputLetters);
+        setDisableRow3(true);
+        break;
+      case 20:
+        checkMatch(arrayOfInputLetters);
+        setDisableRow4(true);
+        break;
+      case 25:
+        checkMatch(arrayOfInputLetters);
+        setDisableRow5(true);
+        break;
+      case 30:
+        checkMatch(arrayOfInputLetters);
+        setDisableRow6(true);
+        break;
     }
   };
 
   // populate string array with colors based on match
   const checkMatch = array => {
     let arrayOfStyleChanges = [...styleChange];
-    console.log(array);
-    console.log(arrayOfStyleChanges);
+    let teller = 0;
 
     for (let i = 0; i < array.length; i++) {
-      if (array[i] === stringLetters[i]) {
-        arrayOfStyleChanges[i] = 'green';
-      } else if (array[i] === '') {
+      // required, otherwise word lenght will be out of bounds
+      if (teller === 5) {
+        teller = 0;
+      }
+      if (array[i] === '') {
         arrayOfStyleChanges[i] = 'black';
-      } else {
+      }
+      if (array[i] !== stringLetters[teller]) {
         arrayOfStyleChanges[i] = 'red';
       }
+      if (stringLetters.includes(array[i])) {
+        arrayOfStyleChanges[i] = 'orange';
+      }
+      if (array[i] === stringLetters[teller]) {
+        arrayOfStyleChanges[i] = 'green';
+      }
+      teller++;
     }
     setStyleChange(arrayOfStyleChanges);
   };
@@ -67,6 +97,8 @@ const Attempt = ({ word, guess, isGuessed, setStyling }) => {
       return style.inputBoxGreen;
     } else if (styleChange[indexNumber] === 'red') {
       return style.inputBoxRed;
+    } else if (styleChange[indexNumber] === 'orange') {
+      return style.inputBoxOrange;
     } else if (styleChange[indexNumber] === 'black') {
       return style.inputBox;
     } else {
@@ -134,6 +166,7 @@ const Attempt = ({ word, guess, isGuessed, setStyling }) => {
             type='text'
             maxLength={1}
             id={6}
+            disabled={disableRow2}
           />
           <input
             className={determineStyle(6)}
@@ -141,6 +174,7 @@ const Attempt = ({ word, guess, isGuessed, setStyling }) => {
             type='text'
             maxLength={1}
             id={7}
+            disabled={disableRow2}
           />
           <input
             className={determineStyle(7)}
@@ -148,6 +182,7 @@ const Attempt = ({ word, guess, isGuessed, setStyling }) => {
             type='text'
             maxLength={1}
             id={8}
+            disabled={disableRow2}
           />
           <input
             className={determineStyle(8)}
@@ -155,6 +190,7 @@ const Attempt = ({ word, guess, isGuessed, setStyling }) => {
             type='text'
             maxLength={1}
             id={9}
+            disabled={disableRow2}
           />
           <input
             className={determineStyle(9)}
@@ -162,6 +198,7 @@ const Attempt = ({ word, guess, isGuessed, setStyling }) => {
             type='text'
             maxLength={1}
             id={10}
+            disabled={disableRow2}
           />
           <input
             className={determineStyle(10)}
@@ -169,86 +206,159 @@ const Attempt = ({ word, guess, isGuessed, setStyling }) => {
             type='text'
             maxLength={1}
             id={11}
+            disabled={disableRow3}
           />
           <input
-            className={style.inputBox}
-            // onChange={e => setEmail(e.target.value)}
-            // className='border p-3'
+            className={determineStyle(11)}
+            onChange={e => handleInput(e.target.value, 11)}
             type='text'
             maxLength={1}
             id={12}
+            disabled={disableRow3}
           />
           <input
-            className={style.inputBox}
-            // onChange={e => setEmail(e.target.value)}
-            // className='border p-3'
+            className={determineStyle(12)}
+            onChange={e => handleInput(e.target.value, 12)}
             type='text'
             maxLength={1}
             id={13}
+            disabled={disableRow3}
           />
           <input
-            className={style.inputBox}
-            // onChange={e => setEmail(e.target.value)}
-            // className='border p-3'
+            className={determineStyle(13)}
+            onChange={e => handleInput(e.target.value, 13)}
             type='text'
             maxLength={1}
             id={14}
+            disabled={disableRow3}
           />
           <input
-            className={style.inputBox}
-            // onChange={e => setEmail(e.target.value)}
-            // className='border p-3'
+            className={determineStyle(14)}
+            onChange={e => handleInput(e.target.value, 14)}
             type='text'
             maxLength={1}
             id={15}
+            disabled={disableRow3}
           />
           <input
-            className={style.inputBox}
-            // onChange={e => setEmail(e.target.value)}
-            // className='border p-3'
+            className={determineStyle(15)}
+            onChange={e => handleInput(e.target.value, 15)}
             type='text'
             maxLength={1}
             id={16}
+            disabled={disableRow4}
           />
           <input
-            className={style.inputBox}
-            // onChange={e => setEmail(e.target.value)}
-            // className='border p-3'
+            className={determineStyle(16)}
+            onChange={e => handleInput(e.target.value, 16)}
             type='text'
             maxLength={1}
             id={17}
+            disabled={disableRow4}
           />
           <input
-            className={style.inputBox}
-            // onChange={e => setEmail(e.target.value)}
-            // className='border p-3'
+            className={determineStyle(17)}
+            onChange={e => handleInput(e.target.value, 17)}
             type='text'
             maxLength={1}
             id={18}
+            disabled={disableRow4}
           />
           <input
-            className={style.inputBox}
-            // onChange={e => setEmail(e.target.value)}
-            // className='border p-3'
+            className={determineStyle(18)}
+            onChange={e => handleInput(e.target.value, 18)}
             type='text'
             maxLength={1}
             id={19}
+            disabled={disableRow4}
           />
           <input
-            className={style.inputBox}
-            // onChange={e => setEmail(e.target.value)}
-            // className='border p-3'
+            className={determineStyle(19)}
+            onChange={e => handleInput(e.target.value, 19)}
             type='text'
             maxLength={1}
             id={20}
+            disabled={disableRow4}
           />
           <input
-            className={style.inputBox}
-            // onChange={e => setEmail(e.target.value)}
-            // className='border p-3'
+            className={determineStyle(20)}
+            onChange={e => handleInput(e.target.value, 20)}
             type='text'
             maxLength={1}
             id={21}
+            disabled={disableRow5}
+          />
+          <input
+            className={determineStyle(21)}
+            onChange={e => handleInput(e.target.value, 21)}
+            type='text'
+            maxLength={1}
+            id={11}
+            disabled={disableRow5}
+          />
+          <input
+            className={determineStyle(22)}
+            onChange={e => handleInput(e.target.value, 22)}
+            type='text'
+            maxLength={1}
+            id={12}
+            disabled={disableRow5}
+          />
+          <input
+            className={determineStyle(23)}
+            onChange={e => handleInput(e.target.value, 23)}
+            type='text'
+            maxLength={1}
+            id={13}
+            disabled={disableRow5}
+          />
+          <input
+            className={determineStyle(24)}
+            onChange={e => handleInput(e.target.value, 24)}
+            type='text'
+            maxLength={1}
+            id={14}
+            disabled={disableRow5}
+          />
+          <input
+            className={determineStyle(25)}
+            onChange={e => handleInput(e.target.value, 25)}
+            type='text'
+            maxLength={1}
+            id={15}
+            disabled={disableRow6}
+          />
+          <input
+            className={determineStyle(26)}
+            onChange={e => handleInput(e.target.value, 26)}
+            type='text'
+            maxLength={1}
+            id={16}
+            disabled={disableRow6}
+          />
+          <input
+            className={determineStyle(27)}
+            onChange={e => handleInput(e.target.value, 27)}
+            type='text'
+            maxLength={1}
+            id={17}
+            disabled={disableRow6}
+          />
+          <input
+            className={determineStyle(28)}
+            onChange={e => handleInput(e.target.value, 28)}
+            type='text'
+            maxLength={1}
+            id={18}
+            disabled={disableRow6}
+          />
+          <input
+            className={determineStyle(29)}
+            onChange={e => handleInput(e.target.value, 29)}
+            type='text'
+            maxLength={1}
+            id={19}
+            disabled={disableRow6}
           />
         </div>
       </form>
