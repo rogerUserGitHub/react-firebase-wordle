@@ -7,7 +7,7 @@ const style = {
   row: `flex`,
   text: `ml-2 cursor-pointer`,
   button: `cursor-pointer flex items-center`,
-  container: `flex row p-8`,
+  container: `flex row pl-8 pt-1`,
   inputBox: `h-20 w-20 border p-3 border-gray-200 bg-black text-white text-3xl text-center`,
   inputBoxGreen: `h-20 w-20 border p-3 border-black-500 bg-green-500 text-black text-3xl text-center`,
   inputBoxRed: `h-20 w-20 border p-3 border-black-500 bg-red-500 text-black text-3xl text-center`,

@@ -14,9 +14,6 @@ const style = {
 };
 
 const Keyboard = ({ attempt, styleChange }) => {
-  console.log(styleChange);
-  console.log(attempt);
-
   const [dictionary, setDictionairy] = useState({});
 
   const attemptAndStyleChangeToDict = () => {
@@ -28,9 +25,6 @@ const Keyboard = ({ attempt, styleChange }) => {
     setDictionairy(dictionaryCopy);
   };
 
-  console.log(dictionary);
-
-  // called in render
   const allocateColorsToKeyboard = letter => {
     const dictionaryCopy = { ...dictionary };
 
@@ -38,9 +32,7 @@ const Keyboard = ({ attempt, styleChange }) => {
       return style.letterBoxDefault;
     }
 
-    console.log(letter);
     const colorValue = dictionaryCopy[letter];
-    console.log(colorValue);
 
     if (colorValue) {
       if (colorValue === 'green') {
