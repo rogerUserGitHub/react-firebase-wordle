@@ -32,6 +32,7 @@ const style = {
 
 const Homepage = () => {
   const [todos, setTodos] = useState([]);
+  const [lastAttempt, setLastAttempt] = useState([]);
   const [input, setInput] = useState('');
   const { user, logout } = UserAuth();
 
@@ -100,6 +101,7 @@ const Homepage = () => {
             guess={'guess'}
             isGuessed={false}
             setStyling={setStyling}
+            lastAttempt={lastAttempt}
           />
         </div>
         <div className={style.container2}>
