@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
-import Todo from 'C:/Users/RDIRKX87/source/repos/react-firebase-wordle/wordle/src/Components/Todo.js';
 import { db } from 'C:/Users/RDIRKX87/source/repos/react-firebase-wordle/wordle/src/firebase.js';
 import {
   query,
@@ -34,12 +33,14 @@ const style = {
 
 const Homepage = () => {
   const [wordList, setWordList] = useState([]);
-  const [word, setWord] = useState('');
+  const [word, setWord] = useState('tests');
   const [isGuessed, setIsGuessed] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const [numberOfTries, setNumberOfTries] = useState(0);
 
   const { user, logout } = UserAuth();
+
+  console.log(wordList);
 
   const createGameRecord = async e => {
     var timestamp = Timestamp.fromDate(new Date());
@@ -99,16 +100,16 @@ const Homepage = () => {
   /*
    * side effects
    */
-  useEffect(() => {
-    fetch('./data/WordList.json')
-      .then(response => response.json())
-      .then(json => {
-        const randomNumber = Math.floor(Math.random() * json.length);
-        setWord(json[randomNumber]);
-        setWordList(json);
-      });
-    console.log('fetch json');
-  }, []);
+  // useEffect(() => {
+  //   fetch('./data/WordList.json')
+  //     .then(response => response.json())
+  //     .then(json => {
+  //       const randomNumber = Math.floor(Math.random() * json.length);
+  //       setWord(json[randomNumber]);
+  //       setWordList(json);
+  //     });
+  //   console.log('fetch json');
+  // }, []);
 
   /*
    * side effects
@@ -124,7 +125,7 @@ const Homepage = () => {
 
   return (
     <>
-      {/* <ResponsiveAppBar /> */}
+      <ResponsiveAppBar logout={logout} />
       <div className={style.bg}>
         <div className={style.container}>
           <h2 className={style.welcome}>Welcome {user.email}</h2>

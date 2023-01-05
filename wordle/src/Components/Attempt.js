@@ -27,7 +27,9 @@ const Attempt = ({ word, handleNumberOfTries, isGuessed }) => {
 
   const stringLetters = word.split('');
 
-  console.log(word);
+  console.log(lastAttempt);
+  console.log(attempt);
+  console.log(styleChange);
 
   const passIsGuessedBack = () => {
     isGuessed(true);
