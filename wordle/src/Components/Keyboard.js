@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
-import { AutoTabProvider } from 'react-auto-tab';
 
 const style = {
   row: `flex`,

@@ -15,9 +15,12 @@ import {
 import { UserAuth } from '../Context/AuthContext';
 import Footer from '../Components/Footer.js';
 import Attempt from '../Components/Attempt.js';
+import DialogWindow from '../Components/DialogWindow.js';
+import { Timestamp } from '@firebase/firestore';
+import ResponsiveAppBar from '../Components/AppBar.js';
 
 const style = {
-  bg: `h-screen w-screen p-2 bg-gradient-to-r from-[#2F89ED] to-[#1CB5E0]`,
+  bg: `h-screen w-screen p-7 bg-gradient-to-r from-[#2F89ED] to-[#1CB5E0]`,
   container: `bg-slate-100 max-w-[500px] w-full m-auto rounded-md shadow-xl p-4`,
   container2: `bg-slate-100 max-w-[500px] w-full m-auto rounded-md shadow-xl p-2 pt-2 mt-5 flex flex-col items-center`,
   welcome: `text-2l font-bold text-center p-1`,
@@ -30,30 +33,23 @@ const style = {
 };
 
 const Homepage = () => {
-  const [todos, setTodos] = useState([]);
-  const [word, setWord] = useState('');
   const [wordList, setWordList] = useState([]);
-  const [lastAttempt, setLastAttempt] = useState([]);
+  const [word, setWord] = useState('');
   const [isGuessed, setIsGuessed] = useState(false);
+  const [isFinished, setIsFinished] = useState(false);
   const [numberOfTries, setNumberOfTries] = useState(0);
-  const [input, setInput] = useState('');
 
   const { user, logout } = UserAuth();
 
-  const createTodo = async e => {
-    // prevent page reload
-    e.preventDefault(e);
-    if (input.length < 1) {
-      alert('Please enter a valid todo');
-      return;
-    }
-    // in cases 'todos' collection does not exist, one is made
-    await addDoc(collection(db, 'todos'), {
-      text: input,
-      completed: false,
-      user: user.uid,
+  const createGameRecord = async e => {
+    var timestamp = Timestamp.fromDate(new Date());
+    await addDoc(collection(db, 'gamerecords'), {
+      date: timestamp,
+      numberOfTries: numberOfTries,
+      uid: user.uid,
+      word: word,
+      isFinished: isFinished,
     });
-    setInput('');
   };
 
   // read todo in firebase
@@ -89,10 +85,15 @@ const Homepage = () => {
 
   const handleGuess = boolean => {
     setIsGuessed(boolean);
+    setIsFinished(true);
   };
 
   const handleNumberOfTries = () => {
     setNumberOfTries(numberOfTries + 1);
+  };
+
+  const handleFinish = boolean => {
+    setIsGuessed(boolean);
   };
 
   /*
@@ -106,10 +107,24 @@ const Homepage = () => {
         setWord(json[randomNumber]);
         setWordList(json);
       });
+    console.log('fetch json');
   }, []);
+
+  /*
+   * side effects
+   */
+  useEffect(() => {
+    if (isFinished || numberOfTries === 6) {
+      createGameRecord();
+    }
+  }, [isFinished, numberOfTries]);
+
+  console.log(isGuessed);
+  console.log(numberOfTries);
 
   return (
     <>
+      {/* <ResponsiveAppBar /> */}
       <div className={style.bg}>
         <div className={style.container}>
           <h2 className={style.welcome}>Welcome {user.email}</h2>
@@ -118,14 +133,16 @@ const Homepage = () => {
             word={word}
             handleNumberOfTries={handleNumberOfTries}
             isGuessed={handleGuess}
+            isFinished={handleFinish}
           />
         </div>
-        <div className={style.container2}>
+        {/* <div className={style.container2}>
           <button className={style.logoutButton} onClick={logout}>
             <span className={style.logOutButtonSpan}>Sign out</span>
           </button>
-        </div>
+        </div> */}
       </div>
+      <DialogWindow isGuessed={isGuessed} numberOfTries={numberOfTries} />
       <Footer />
     </>
   );

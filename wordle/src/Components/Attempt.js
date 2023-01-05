@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { FaRegTrashAlt } from 'react-icons/fa';
-import { AutoTabProvider } from 'react-auto-tab';
 import Keyboard from './Keyboard';
 
 const style = {
@@ -30,6 +29,14 @@ const Attempt = ({ word, handleNumberOfTries, isGuessed }) => {
 
   console.log(word);
 
+  const passIsGuessedBack = () => {
+    isGuessed(true);
+  };
+
+  const passNumberOfTriesBack = () => {
+    handleNumberOfTries();
+  };
+
   const handleInput = (letterInput, index) => {
     let arrayOfInputLetters = [...attempt];
 
@@ -43,7 +50,7 @@ const Attempt = ({ word, handleNumberOfTries, isGuessed }) => {
       case 5:
         checkMatch(arrayOfInputLetters);
         setDisableRow2(false);
-        passNumberOfTriesBack();
+        handleNumberOfTries();
         break;
       case 10:
         checkMatch(arrayOfInputLetters);
@@ -112,14 +119,6 @@ const Attempt = ({ word, handleNumberOfTries, isGuessed }) => {
     } else {
       return style.inputBox;
     }
-  };
-
-  const passIsGuessedBack = () => {
-    isGuessed(true);
-  };
-
-  const passNumberOfTriesBack = () => {
-    handleNumberOfTries();
   };
 
   /*
