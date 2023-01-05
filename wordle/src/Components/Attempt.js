@@ -14,12 +14,9 @@ const style = {
   inputBoxOrange: `h-20 w-20 border p-3 border-black-500 bg-orange-500 text-black text-3xl text-center`,
 };
 
-const Attempt = ({ word, guess, isGuessed, setStyling }) => {
+const Attempt = ({ word, handleNumberOfTries, isGuessed }) => {
   const [attempt, setAttempt] = useState([]);
   const [lastAttempt, setLastAttempt] = useState([]);
-  const [numberOfTries, setNumberOfTries] = useState(0);
-  const [gameFinished, setGameFinished] = useState(false);
-
   const [styleChange, setStyleChange] = useState([]);
 
   const [disableRow1, setDisableRow1] = useState(false);
@@ -30,6 +27,8 @@ const Attempt = ({ word, guess, isGuessed, setStyling }) => {
   const [disableRow6, setDisableRow6] = useState(true);
 
   const stringLetters = word.split('');
+
+  console.log(word);
 
   const handleInput = (letterInput, index) => {
     let arrayOfInputLetters = [...attempt];
@@ -44,31 +43,31 @@ const Attempt = ({ word, guess, isGuessed, setStyling }) => {
       case 5:
         checkMatch(arrayOfInputLetters);
         setDisableRow2(false);
-        setNumberOfTries(numberOfTries + 1);
+        passNumberOfTriesBack();
         break;
       case 10:
         checkMatch(arrayOfInputLetters);
         setDisableRow3(false);
-        setNumberOfTries(numberOfTries + 1);
+        passNumberOfTriesBack();
         break;
       case 15:
         checkMatch(arrayOfInputLetters);
         setDisableRow4(false);
-        setNumberOfTries(numberOfTries + 1);
+        passNumberOfTriesBack();
         break;
       case 20:
         checkMatch(arrayOfInputLetters);
         setDisableRow5(false);
-        setNumberOfTries(numberOfTries + 1);
+        passNumberOfTriesBack();
         break;
       case 25:
         checkMatch(arrayOfInputLetters);
         setDisableRow6(false);
-        setNumberOfTries(numberOfTries + 1);
+        passNumberOfTriesBack();
         break;
       case 30:
         checkMatch(arrayOfInputLetters);
-        setNumberOfTries(numberOfTries + 1);
+        passNumberOfTriesBack();
         break;
     }
   };
@@ -115,6 +114,14 @@ const Attempt = ({ word, guess, isGuessed, setStyling }) => {
     }
   };
 
+  const passIsGuessedBack = () => {
+    isGuessed(true);
+  };
+
+  const passNumberOfTriesBack = () => {
+    handleNumberOfTries();
+  };
+
   /*
    * side effects
    */
@@ -128,7 +135,7 @@ const Attempt = ({ word, guess, isGuessed, setStyling }) => {
 
   useEffect(() => {
     if (lastAttempt.filter(v => v === 'green').length === 5) {
-      setGameFinished(true);
+      passIsGuessedBack();
       console.log('finished');
     }
   }, [lastAttempt]);

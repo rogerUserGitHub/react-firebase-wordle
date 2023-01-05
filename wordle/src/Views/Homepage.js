@@ -31,16 +31,14 @@ const style = {
 
 const Homepage = () => {
   const [todos, setTodos] = useState([]);
+  const [word, setWord] = useState('');
+  const [wordList, setWordList] = useState([]);
   const [lastAttempt, setLastAttempt] = useState([]);
+  const [isGuessed, setIsGuessed] = useState(false);
+  const [numberOfTries, setNumberOfTries] = useState(0);
   const [input, setInput] = useState('');
+
   const { user, logout } = UserAuth();
-
-  const [guess1, setGuess1] = useState();
-
-  const setStyling = color => {
-    if (color === 'green') {
-    }
-  };
 
   const createTodo = async e => {
     // prevent page reload
@@ -89,6 +87,27 @@ const Homepage = () => {
     await deleteDoc(doc(db, 'todos', itemId));
   };
 
+  const handleGuess = boolean => {
+    setIsGuessed(boolean);
+  };
+
+  const handleNumberOfTries = () => {
+    setNumberOfTries(numberOfTries + 1);
+  };
+
+  /*
+   * side effects
+   */
+  useEffect(() => {
+    fetch('./data/WordList.json')
+      .then(response => response.json())
+      .then(json => {
+        const randomNumber = Math.floor(Math.random() * json.length);
+        setWord(json[randomNumber]);
+        setWordList(json);
+      });
+  }, []);
+
   return (
     <>
       <div className={style.bg}>
@@ -96,11 +115,9 @@ const Homepage = () => {
           <h2 className={style.welcome}>Welcome {user.email}</h2>
           <h3 className={style.heading}>Wordle</h3>
           <Attempt
-            word={'tests'}
-            guess={'guess'}
-            isGuessed={false}
-            setStyling={setStyling}
-            lastAttempt={lastAttempt}
+            word={word}
+            handleNumberOfTries={handleNumberOfTries}
+            isGuessed={handleGuess}
           />
         </div>
         <div className={style.container2}>
