@@ -12,8 +12,17 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { Link, useMatch, useResolvedPath } from 'react-router-dom';
 
 const pages = ['About'];
+
+const CustomLink = ({ to, children, ...props }) => {
+  return (
+    <Link to={to} {...props}>
+      {children}
+    </Link>
+  );
+};
 
 const ResponsiveAppBar = ({ logout }) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -35,7 +44,7 @@ const ResponsiveAppBar = ({ logout }) => {
   };
 
   return (
-    <AppBar position='static'>
+    <AppBar position='static' style={{ backgroundColor: '#232326' }}>
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -43,7 +52,7 @@ const ResponsiveAppBar = ({ logout }) => {
             variant='h6'
             noWrap
             component='a'
-            href='/'
+            href='/homepage'
             sx={{
               mr: 2,
               display: { xs: 'none', md: 'flex' },
@@ -97,7 +106,7 @@ const ResponsiveAppBar = ({ logout }) => {
             variant='h5'
             noWrap
             component='a'
-            href=''
+            href='/homepage'
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -126,7 +135,7 @@ const ResponsiveAppBar = ({ logout }) => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+                <Avatar alt='P' src='pic1.webp' />
               </IconButton>
             </Tooltip>
             <Menu
@@ -145,11 +154,11 @@ const ResponsiveAppBar = ({ logout }) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem key={'profile'} onClick={handleCloseUserMenu}>
-                <Typography textAlign='center'>Profile</Typography>
+              <MenuItem key={'profile'}>
+                <CustomLink to='/profile'>Profile</CustomLink>
               </MenuItem>
-              <MenuItem key={'dashboard'} onClick={handleCloseUserMenu}>
-                <Typography textAlign='center'>Dasbboard</Typography>
+              <MenuItem key={'dashboard'}>
+                <CustomLink to='/dashboard'>Dashboard</CustomLink>
               </MenuItem>
               <MenuItem key={'signout'} onClick={logout}>
                 <Typography textAlign='center'>Signout</Typography>

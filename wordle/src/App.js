@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import { AuthContextProvider } from './Context/AuthContext';
 import Homepage from './Views/Homepage';
+import Profile from './Views/Profile';
 import Login from './Views/Login';
 import SignUp from './Views/SignUp';
 
@@ -18,6 +19,14 @@ function App() {
             element={
               <PrivateRoute>
                 <Homepage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/profile'
+            element={
+              <PrivateRoute>
+                <Profile />
               </PrivateRoute>
             }
           />

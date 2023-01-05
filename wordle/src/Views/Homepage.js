@@ -41,6 +41,7 @@ const Homepage = () => {
   const { user, logout } = UserAuth();
 
   console.log(wordList);
+  console.log(word);
 
   const createGameRecord = async e => {
     var timestamp = Timestamp.fromDate(new Date());
@@ -100,16 +101,16 @@ const Homepage = () => {
   /*
    * side effects
    */
-  // useEffect(() => {
-  //   fetch('./data/WordList.json')
-  //     .then(response => response.json())
-  //     .then(json => {
-  //       const randomNumber = Math.floor(Math.random() * json.length);
-  //       setWord(json[randomNumber]);
-  //       setWordList(json);
-  //     });
-  //   console.log('fetch json');
-  // }, []);
+  useEffect(() => {
+    fetch('./data/WordList.json')
+      .then(response => response.json())
+      .then(json => {
+        const randomNumber = Math.floor(Math.random() * json.length);
+        setWord(json[randomNumber]);
+        setWordList(json);
+        console.log(word);
+      });
+  }, []);
 
   /*
    * side effects
@@ -137,11 +138,6 @@ const Homepage = () => {
             isFinished={handleFinish}
           />
         </div>
-        {/* <div className={style.container2}>
-          <button className={style.logoutButton} onClick={logout}>
-            <span className={style.logOutButtonSpan}>Sign out</span>
-          </button>
-        </div> */}
       </div>
       <DialogWindow isGuessed={isGuessed} numberOfTries={numberOfTries} />
       <Footer />
