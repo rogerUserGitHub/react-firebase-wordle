@@ -16,8 +16,10 @@ const SignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const { createUser } = UserAuth();
+  const { createUser, user } = UserAuth();
   const navigate = useNavigate();
+
+  console.log(user);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -26,7 +28,7 @@ const SignUp = () => {
       await createUser(email, password);
       navigate('/homepage');
     } catch (e) {
-      alert('User already exists');
+      alert(e.message);
     }
   };
 

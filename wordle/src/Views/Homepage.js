@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { AiOutlinePlus } from 'react-icons/ai';
 import { db } from 'C:/Users/RDIRKX87/source/repos/react-firebase-wordle/wordle/src/firebase.js';
 import {
-  query,
   collection,
-  onSnapshot,
   updateDoc,
   doc,
   addDoc,
   deleteDoc,
-  where,
+  getDocs,
 } from 'firebase/firestore';
 import { UserAuth } from '../Context/AuthContext';
 import Footer from '../Components/Footer.js';
@@ -40,9 +37,6 @@ const Homepage = () => {
 
   const { user, logout } = UserAuth();
 
-  console.log(wordList);
-  console.log(word);
-
   const createGameRecord = async e => {
     var timestamp = Timestamp.fromDate(new Date());
     await addDoc(collection(db, 'gamerecords'), {
@@ -54,30 +48,33 @@ const Homepage = () => {
     });
   };
 
-  // read todo in firebase
-  // useEffect(() => {
-  //   if (user.email !== '') {
-  //     const recordRef = collection(db, 'todos');
-  //     const q = query(recordRef, where('user', '==', user.uid));
+  // first checks if profile exists. If not, new one is made
+  const createProfile = async () => {
+    const colRef = collection(db, 'profile');
+    let result;
 
-  //     const unsubscribe = onSnapshot(q, querySnapshot => {
-  //       let todosArr = [];
-  //       querySnapshot.forEach(doc => {
-  //         todosArr.push({ ...doc?.data(), id: doc?.id });
-  //       });
-  //       setTodos(todosArr);
-  //     });
-  //     return () => unsubscribe();
-  //   } else {
-  //     setTodos([]);
-  //   }
-  // }, [user]);
-
-  // update todo in firebase
-  const toggleComplete = async todo => {
-    await updateDoc(doc(db, 'todos', todo.id), {
-      completed: !todo.completed,
-    });
+    getDocs(colRef)
+      .then(snapshot => {
+        let profileData = [];
+        snapshot?.docs?.forEach(doc => {
+          profileData?.push({ ...doc.data(), id: doc.id });
+        });
+        result = profileData?.find(obj => obj?.uid === user?.uid);
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+    if (result === undefined) {
+      await addDoc(collection(db, 'profile'), {
+        uid: user.uid,
+        screenName: '',
+        age: 98,
+        country: '',
+        language: 'dutch',
+        email: user.email,
+        avatar: 1,
+      });
+    }
   };
 
   // delete todo
@@ -112,17 +109,15 @@ const Homepage = () => {
       });
   }, []);
 
-  /*
-   * side effects
-   */
   useEffect(() => {
     if (isFinished || numberOfTries === 6) {
       createGameRecord();
     }
   }, [isFinished, numberOfTries]);
 
-  console.log(isGuessed);
-  console.log(numberOfTries);
+  useEffect(() => {
+    createProfile();
+  }, []);
 
   return (
     <>

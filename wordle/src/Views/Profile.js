@@ -1,31 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { AiOutlinePlus } from 'react-icons/ai';
 import { db } from 'C:/Users/RDIRKX87/source/repos/react-firebase-wordle/wordle/src/firebase.js';
-import {
-  query,
-  collection,
-  onSnapshot,
-  updateDoc,
-  doc,
-  addDoc,
-  deleteDoc,
-  where,
-} from 'firebase/firestore';
+import { collection, updateDoc, doc, getDocs } from 'firebase/firestore';
+import 'firebase/firestore';
 import { UserAuth } from '../Context/AuthContext';
 import Footer from '../Components/Footer.js';
-import Attempt from '../Components/Attempt.js';
-import DialogWindow from '../Components/DialogWindow.js';
-import { Timestamp } from '@firebase/firestore';
 import ResponsiveAppBar from '../Components/AppBar.js';
 import Box from '@mui/material/Box';
-import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import ImageAvatars from '../Components/Avatar';
 import Button from '@mui/material/Button';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 const style = {
   bg: `h-screen w-screen p-7 bg-gradient-to-r from-[#2F89ED] to-[#1CB5E0]`,
@@ -45,12 +32,57 @@ const style = {
 
 const Profile = () => {
   const { user, logout } = UserAuth();
+  const [avatar, setAvatar] = useState(1);
+  const [screenName, setScreenName] = useState('');
+  const [age, setAge] = useState();
+  const [country, setCountry] = useState('');
+  const [language, setLanguage] = useState('');
+  const [docId, setDocId] = useState('');
 
-  console.log(user);
+  const setValues = profileData => {
+    setAge(profileData?.age);
+    setScreenName(profileData?.screenName);
+    setCountry(profileData?.country);
+    setLanguage(profileData?.language);
+    setAvatar(profileData?.avatar);
+  };
+
+  const renderProfileData = () => {
+    const colRef = collection(db, 'profile');
+    let result;
+
+    getDocs(colRef)
+      .then(snapshot => {
+        let profileData = [];
+        snapshot?.docs?.forEach(doc => {
+          profileData?.push({ ...doc?.data(), id: doc.id });
+        });
+        console.log(profileData);
+        result = profileData?.find(obj => obj?.uid === user?.uid);
+        setDocId(result?.id);
+        setValues(result);
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  };
+
+  const updateProfile = async () => {
+    await updateDoc(doc(db, 'profile', docId), {
+      screenName: screenName,
+      age: age,
+      country: country,
+      language: language,
+      avatar: avatar,
+    });
+  };
 
   /*
    * side effects
    */
+  useEffect(() => {
+    renderProfileData();
+  }, [user]);
 
   return (
     <>
@@ -71,7 +103,6 @@ const Profile = () => {
                 disabled
                 id='filled-disabled'
                 label='username'
-                defaultValue='username'
                 variant='filled'
                 value={user?.email}
               />
@@ -80,23 +111,47 @@ const Profile = () => {
                 label='screen name'
                 variant='filled'
                 placeholder='screen name'
+                value={screenName}
+                InputProps={{ inputProps: { max: 25 } }}
+                onChange={e => setScreenName(e.target.value)}
               />
               <TextField
                 id='filled-age'
                 label='age'
                 variant='filled'
-                placeholder='age'
                 type='number'
+                value={age}
                 InputProps={{ inputProps: { min: 5, max: 99 } }}
+                onChange={e => setAge(e.target.value)}
               />
               <TextField
                 id='filled'
                 label='country'
                 variant='filled'
+                value={country}
                 placeholder='country'
+                onChange={e => setCountry(e.target.value)}
               />
             </Box>
             <div className={style.container4}>
+              <FormControl sx={{ m: 1, minWidth: 200 }}>
+                <InputLabel id='demo-simple-select-autowidth-label'>
+                  Language
+                </InputLabel>
+                <Select
+                  labelId='demo-simple-select-autowidth-label'
+                  id='demo-simple-select-autowidth'
+                  value={language}
+                  onChange={e => setLanguage(e.target.value)}
+                  autoWidth
+                  label='country'
+                >
+                  <MenuItem value={'Dutch'}>Dutch</MenuItem>
+                  <MenuItem value={'English'}>English</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+            <div className={style.container4} onClick={updateProfile}>
               <Button variant='outlined'>Update profile</Button>
             </div>
           </div>
