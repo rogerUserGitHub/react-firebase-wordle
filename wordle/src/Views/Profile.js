@@ -47,6 +47,8 @@ const Profile = () => {
     setAvatar(profileData?.avatar);
   };
 
+  console.log(user);
+
   const renderProfileData = () => {
     const colRef = collection(db, 'profile');
     let result;
@@ -57,7 +59,6 @@ const Profile = () => {
         snapshot?.docs?.forEach(doc => {
           profileData?.push({ ...doc?.data(), id: doc.id });
         });
-        console.log(profileData);
         result = profileData?.find(obj => obj?.uid === user?.uid);
         setDocId(result?.id);
         setValues(result);
@@ -75,6 +76,7 @@ const Profile = () => {
       language: language,
       avatar: avatar,
     });
+    alert('Profile has been updated');
   };
 
   /*
@@ -102,13 +104,13 @@ const Profile = () => {
               <TextField
                 disabled
                 id='filled-disabled'
-                label='username'
+                helperText='age'
                 variant='filled'
                 value={user?.email}
               />
               <TextField
                 id='filled'
-                label='screen name'
+                helperText='screen name'
                 variant='filled'
                 placeholder='screen name'
                 value={screenName}
@@ -116,17 +118,16 @@ const Profile = () => {
                 onChange={e => setScreenName(e.target.value)}
               />
               <TextField
-                id='filled-age'
-                label='age'
+                id='standard-helperText'
                 variant='filled'
-                type='number'
+                helperText='age'
                 value={age}
                 InputProps={{ inputProps: { min: 5, max: 99 } }}
                 onChange={e => setAge(e.target.value)}
               />
               <TextField
                 id='filled'
-                label='country'
+                helperText='country'
                 variant='filled'
                 value={country}
                 placeholder='country'

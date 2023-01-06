@@ -34,6 +34,7 @@ const Homepage = () => {
   const [isGuessed, setIsGuessed] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const [numberOfTries, setNumberOfTries] = useState(0);
+  const [profileExists, setProfileExists] = useState(true);
 
   const { user, logout } = UserAuth();
 
@@ -48,38 +49,26 @@ const Homepage = () => {
     });
   };
 
+  console.log(profileExists);
+
   // first checks if profile exists. If not, new one is made
-  const createProfile = async () => {
+  const createProfile = () => {
     const colRef = collection(db, 'profile');
-    let result;
 
     getDocs(colRef)
       .then(snapshot => {
         let profileData = [];
-        snapshot?.docs?.forEach(doc => {
-          profileData?.push({ ...doc.data(), id: doc.id });
+        snapshot.docs.forEach(doc => {
+          profileData.push({ ...doc.data(), id: doc.id });
         });
-        result = profileData?.find(obj => obj?.uid === user?.uid);
+        let result = profileData.find(obj => obj.uid === user.uid);
+        // if (result === undefined) {
+        //   setProfileExists(false);
+        // }
       })
       .catch(err => {
         console.log(err.message);
       });
-    if (result === undefined) {
-      await addDoc(collection(db, 'profile'), {
-        uid: user.uid,
-        screenName: '',
-        age: 98,
-        country: '',
-        language: 'dutch',
-        email: user.email,
-        avatar: 1,
-      });
-    }
-  };
-
-  // delete todo
-  const deleteTodo = async itemId => {
-    await deleteDoc(doc(db, 'todos', itemId));
   };
 
   const handleGuess = boolean => {
@@ -118,6 +107,21 @@ const Homepage = () => {
   useEffect(() => {
     createProfile();
   }, []);
+
+  useEffect(() => {
+    if (!profileExists) {
+      console.log('profile added');
+      addDoc(collection(db, 'profile'), {
+        uid: user.uid,
+        screenName: '',
+        age: 98,
+        country: '',
+        language: 'Dutch',
+        email: user.email,
+        avatar: 1,
+      });
+    }
+  }, [profileExists]);
 
   return (
     <>

@@ -15,8 +15,6 @@ const style = {
 const Keyboard = ({ attempt, styleChange }) => {
   const [dictionary, setDictionairy] = useState({});
 
-  console.log(dictionary);
-
   const attemptAndStyleChangeToDict = () => {
     const dictionaryCopy = { ...dictionary };
 

@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../Context/AuthContext';
 import Footer from '../Components/Footer.js';
+import { db } from 'C:/Users/RDIRKX87/source/repos/react-firebase-wordle/wordle/src/firebase.js';
+import { collection, addDoc } from 'firebase/firestore';
 
 const style = {
   bg: `h-screen w-screen p-4 bg-gradient-to-r from-blue-200 to-[#B0E0E6]`,
@@ -17,6 +19,7 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const { createUser, user } = UserAuth();
+  const [userCreated, setUserCreated] = useState(false);
   const navigate = useNavigate();
 
   console.log(user);
@@ -26,11 +29,30 @@ const SignUp = () => {
     setError('');
     try {
       await createUser(email, password);
-      navigate('/homepage');
+      setUserCreated(true);
     } catch (e) {
       alert(e.message);
     }
   };
+
+  const createUser2 = async () => {
+    await addDoc(collection(db, 'profile'), {
+      uid: user?.uid,
+      screenName: '',
+      age: 98,
+      country: '',
+      language: 'Dutch',
+      email: user.email,
+      avatar: 1,
+    });
+  };
+
+  useEffect(() => {
+    if (userCreated) {
+      createUser2();
+      navigate('/homepage');
+    }
+  }, [userCreated]);
 
   return (
     <>
