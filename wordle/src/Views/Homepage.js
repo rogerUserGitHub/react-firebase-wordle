@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from 'C:/Users/RDIRKX87/source/repos/react-firebase-wordle/wordle/src/firebase.js';
-import {
-  collection,
-  updateDoc,
-  doc,
-  addDoc,
-  deleteDoc,
-  getDocs,
-} from 'firebase/firestore';
+import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { UserAuth } from '../Context/AuthContext';
 import Footer from '../Components/Footer.js';
 import Attempt from '../Components/Attempt.js';
@@ -34,7 +27,8 @@ const Homepage = () => {
   const [isGuessed, setIsGuessed] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const [numberOfTries, setNumberOfTries] = useState(0);
-  const [profileExists, setProfileExists] = useState(true);
+  // const [profileExists, setProfileExists] = useState(true);
+  const [avatar, setAvatar] = useState('');
 
   const { user, logout } = UserAuth();
 
@@ -49,22 +43,21 @@ const Homepage = () => {
     });
   };
 
-  console.log(profileExists);
-
   // first checks if profile exists. If not, new one is made
-  const createProfile = () => {
+  const getProfileData = () => {
     const colRef = collection(db, 'profile');
 
     getDocs(colRef)
       .then(snapshot => {
         let profileData = [];
-        snapshot.docs.forEach(doc => {
-          profileData.push({ ...doc.data(), id: doc.id });
+        snapshot?.docs?.forEach(doc => {
+          profileData?.push({ ...doc?.data(), id: doc?.id });
         });
-        let result = profileData.find(obj => obj.uid === user.uid);
-        // if (result === undefined) {
-        //   setProfileExists(false);
-        // }
+        let result = profileData?.find(obj => obj?.uid === user?.uid);
+        console.log(result);
+        if (result) {
+          setAvatar(result.avatar);
+        }
       })
       .catch(err => {
         console.log(err.message);
@@ -99,33 +92,18 @@ const Homepage = () => {
   }, []);
 
   useEffect(() => {
+    getProfileData();
+  }, []);
+
+  useEffect(() => {
     if (isFinished || numberOfTries === 6) {
       createGameRecord();
     }
   }, [isFinished, numberOfTries]);
 
-  useEffect(() => {
-    createProfile();
-  }, []);
-
-  useEffect(() => {
-    if (!profileExists) {
-      console.log('profile added');
-      addDoc(collection(db, 'profile'), {
-        uid: user.uid,
-        screenName: '',
-        age: 98,
-        country: '',
-        language: 'Dutch',
-        email: user.email,
-        avatar: 1,
-      });
-    }
-  }, [profileExists]);
-
   return (
     <>
-      <ResponsiveAppBar logout={logout} />
+      <ResponsiveAppBar avatar={avatar} logout={logout} />
       <div className={style.bg}>
         <div className={style.container}>
           <h2 className={style.welcome}>Welcome {user.email}</h2>

@@ -12,7 +12,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { Link, useMatch, useResolvedPath } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const pages = ['About'];
 
@@ -24,7 +24,7 @@ const CustomLink = ({ to, children, ...props }) => {
   );
 };
 
-const ResponsiveAppBar = ({ logout }) => {
+const ResponsiveAppBar = ({ avatar, logout }) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -41,6 +41,10 @@ const ResponsiveAppBar = ({ logout }) => {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const setSource = () => {
+    return `${avatar}.webp`;
   };
 
   return (
@@ -135,7 +139,7 @@ const ResponsiveAppBar = ({ logout }) => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='P' src='pic1.webp' />
+                <Avatar alt='P' src={setSource()} />
               </IconButton>
             </Tooltip>
             <Menu

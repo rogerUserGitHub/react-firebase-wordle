@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { FaRegTrashAlt } from 'react-icons/fa';
 import Keyboard from './Keyboard';
 
 const style = {

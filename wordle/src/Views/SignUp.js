@@ -43,7 +43,7 @@ const SignUp = () => {
       country: '',
       language: 'Dutch',
       email: user.email,
-      avatar: 1,
+      avatar: 'pic1',
     });
   };
 

@@ -5,6 +5,7 @@ import 'firebase/firestore';
 import { UserAuth } from '../Context/AuthContext';
 import Footer from '../Components/Footer.js';
 import ResponsiveAppBar from '../Components/AppBar.js';
+import AvatarDialog from '../Components/AvatarDialog.js';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
@@ -13,16 +14,19 @@ import ImageAvatars from '../Components/Avatar';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
+import CountryList from '../Utils/CountryList';
 
 const style = {
   bg: `h-screen w-screen p-7 bg-gradient-to-r from-[#2F89ED] to-[#1CB5E0]`,
-  container: `flex-wrap bg-slate-100 max-w-[1000px] m-auto rounded-md shadow-xl p-4 `,
-  container2: `bg-slate-250 max-w-[1000px] m-auto rounded-md shadow-xl pb-10 p-4`,
+  container: `flex-wrap bg-slate-100 max-w-[1000px] m-auto rounded-md shadow-xl`,
+  container2: `bg-slate-250 max-w-[1000px] m-auto rounded-md shadow-xl pb-10 p-4 pl-12`,
   container3: `bg-slate-250 container max-w-[1000px]`,
   container4: `max-w-[1000px] m-auto rounded-md pb-10 p-4`,
+  container5: `bg-slate-250 max-w-[1000px] m-auto rounded-md shadow-xl pb-10 p-4 pl-12`,
   welcome: `text-2l font-bold text-center p-1`,
   heading: `text-3xl font-bold text-center text-gray-800 p-1`,
   avatar: `text-3xl font-bold text-center text-gray-800 p-1`,
+  avatarDialog: `p-5`,
   form: `flex justify-between`,
   input: `border w-full text-xl`,
   button: `border p-4 ml-2 bg-blue-200`,
@@ -32,7 +36,7 @@ const style = {
 
 const Profile = () => {
   const { user, logout } = UserAuth();
-  const [avatar, setAvatar] = useState(1);
+  const [avatar, setAvatar] = useState('');
   const [screenName, setScreenName] = useState('');
   const [age, setAge] = useState();
   const [country, setCountry] = useState('');
@@ -79,6 +83,10 @@ const Profile = () => {
     alert('Profile has been updated');
   };
 
+  const determineAvatar = avatarChoice => {
+    setAvatar(avatarChoice);
+  };
+
   /*
    * side effects
    */
@@ -88,7 +96,7 @@ const Profile = () => {
 
   return (
     <>
-      <ResponsiveAppBar logout={logout} />
+      <ResponsiveAppBar avatar={avatar} logout={logout} />
       <div className={style.bg}>
         <div className={style.container}>
           <div className={style.container2}>
@@ -100,11 +108,14 @@ const Profile = () => {
               noValidate
               autoComplete='off'
             >
-              <ImageAvatars className={style.avatar} />
+              <div className={style.container5}>
+                <ImageAvatars className={style.avatar} avatar={avatar} />
+                <AvatarDialog determineAvatar={determineAvatar} />
+              </div>
               <TextField
                 disabled
                 id='filled-disabled'
-                helperText='age'
+                helperText='email / username'
                 variant='filled'
                 value={user?.email}
               />
@@ -125,17 +136,28 @@ const Profile = () => {
                 InputProps={{ inputProps: { min: 5, max: 99 } }}
                 onChange={e => setAge(e.target.value)}
               />
-              <TextField
-                id='filled'
-                helperText='country'
-                variant='filled'
-                value={country}
-                placeholder='country'
-                onChange={e => setCountry(e.target.value)}
-              />
             </Box>
             <div className={style.container4}>
-              <FormControl sx={{ m: 1, minWidth: 200 }}>
+              <FormControl sx={{ minWidth: 400 }}>
+                <InputLabel id='demo-simple-select-autowidth-label'>Country</InputLabel>
+                <Select
+                  labelId='demo-simple-select-autowidth-label'
+                  id='demo-simple-select-autowidth'
+                  value={country}
+                  onChange={e => setCountry(e.target.value)}
+                  autoWidth
+                  label='Country'
+                >
+                  {CountryList.map(country => (
+                    <MenuItem key={country} value={country}>
+                      {country}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+            <div className={style.container4}>
+              <FormControl sx={{ minWidth: 400 }}>
                 <InputLabel id='demo-simple-select-autowidth-label'>
                   Language
                 </InputLabel>
