@@ -32,6 +32,8 @@ const Homepage = () => {
 
   const { user, logout } = UserAuth();
 
+  console.log(word);
+
   const createGameRecord = async e => {
     var timestamp = Timestamp.fromDate(new Date());
     await addDoc(collection(db, 'gamerecords'), {
@@ -87,7 +89,6 @@ const Homepage = () => {
         const randomNumber = Math.floor(Math.random() * json.length);
         setWord(json[randomNumber]);
         setWordList(json);
-        console.log(word);
       });
   }, []);
 

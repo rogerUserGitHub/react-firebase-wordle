@@ -19,17 +19,17 @@ import CountryList from '../Utils/CountryList';
 const style = {
   bg: `h-screen w-screen p-7 bg-gradient-to-r from-[#2F89ED] to-[#1CB5E0]`,
   container: `flex-wrap bg-slate-100 max-w-[1000px] m-auto rounded-md shadow-xl`,
-  container2: `bg-slate-250 max-w-[1000px] m-auto rounded-md shadow-xl pb-10 p-4 pl-12`,
+  container2: `bg-slate-250 max-w-[1000px] m-auto rounded-md shadow-xl pl-12`,
   container3: `bg-slate-250 container max-w-[1000px]`,
   container4: `max-w-[1000px] m-auto rounded-md pb-10 p-4`,
-  container5: `bg-slate-250 max-w-[1000px] m-auto rounded-md shadow-xl pb-10 p-4 pl-12`,
+  container5: `bg-slate-250 max-w-[1000px] m-auto rounded-md shadow-xl pb-4 p-4 pl-12`,
   welcome: `text-2l font-bold text-center p-1`,
   heading: `text-3xl font-bold text-center text-gray-800 p-1`,
   avatar: `text-3xl font-bold text-center text-gray-800 p-1`,
   avatarDialog: `p-5`,
   form: `flex justify-between`,
   input: `border w-full text-xl`,
-  button: `border p-4 ml-2 bg-blue-200`,
+  button: `pt-8`,
   logoutButton: `inline-flex items-center justify-center p-0.5  text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-grey-500 to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800`,
   logOutButtonSpan: `px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0`,
 };
@@ -52,6 +52,7 @@ const Profile = () => {
   };
 
   console.log(user);
+  console.log(screenName);
 
   const renderProfileData = () => {
     const colRef = collection(db, 'profile');
@@ -123,9 +124,8 @@ const Profile = () => {
                 id='filled'
                 helperText='screen name'
                 variant='filled'
-                placeholder='screen name'
+                placeholder='screen name (max. 25 characters)'
                 value={screenName}
-                InputProps={{ inputProps: { max: 25 } }}
                 onChange={e => setScreenName(e.target.value)}
               />
               <TextField
@@ -138,7 +138,7 @@ const Profile = () => {
               />
             </Box>
             <div className={style.container4}>
-              <FormControl sx={{ minWidth: 400 }}>
+              <FormControl sx={{ minWidth: 440, paddingRight: 4, paddingBottom: 5 }}>
                 <InputLabel id='demo-simple-select-autowidth-label'>Country</InputLabel>
                 <Select
                   labelId='demo-simple-select-autowidth-label'
@@ -155,8 +155,6 @@ const Profile = () => {
                   ))}
                 </Select>
               </FormControl>
-            </div>
-            <div className={style.container4}>
               <FormControl sx={{ minWidth: 400 }}>
                 <InputLabel id='demo-simple-select-autowidth-label'>
                   Language
@@ -173,9 +171,15 @@ const Profile = () => {
                   <MenuItem value={'English'}>English</MenuItem>
                 </Select>
               </FormControl>
-            </div>
-            <div className={style.container4} onClick={updateProfile}>
-              <Button variant='outlined'>Update profile</Button>
+              <div className={style.button}>
+                <Button
+                  variant='outlined'
+                  onClick={updateProfile}
+                  disabled={screenName?.length > 25 || age > 99 || age < 6}
+                >
+                  Update profile
+                </Button>
+              </div>
             </div>
           </div>
         </div>

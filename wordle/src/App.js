@@ -6,6 +6,7 @@ import Homepage from './Views/Homepage';
 import Profile from './Views/Profile';
 import Login from './Views/Login';
 import SignUp from './Views/SignUp';
+import Dashboard from './Views/Dashboard';
 
 function App() {
   return (
@@ -27,6 +28,14 @@ function App() {
             element={
               <PrivateRoute>
                 <Profile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/dashboard'
+            element={
+              <PrivateRoute>
+                <Dashboard />
               </PrivateRoute>
             }
           />
