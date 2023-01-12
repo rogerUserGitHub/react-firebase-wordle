@@ -1,28 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { db } from 'C:/Users/RDIRKX87/source/repos/react-firebase-wordle/wordle/src/firebase.js';
-import { collection, updateDoc, doc, getDocs } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import 'firebase/firestore';
 import { UserAuth } from '../Context/AuthContext';
-import Footer from '../Components/Footer.js';
 import Rating from '../Components/Rating.js';
+import AverageRating from '../Components/AverageRating.js';
+import Badge from '../Components/Badge.js';
 import ResponsiveAppBar from '../Components/AppBar.js';
+import ProgressBar from '../Components/ProgressBar.js';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import ScoreboardIcon from '@mui/icons-material/Scoreboard';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import StarIcon from '@mui/icons-material/Star';
-import AvatarDialog from '../Components/AvatarDialog.js';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import TextField from '@mui/material/TextField';
 import ImageAvatars from '../Components/Avatar';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import CountryList from '../Utils/CountryList';
+import { styled } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
+import { tableContainerClasses } from '@mui/material';
 
 const style = {
-  bg: `h-screen w-screen p-7 bg-gradient-to-r from-[#2F89ED] to-[#1CB5E0]`,
+  bg: `p-7 bg-gradient-to-r from-[#13171f] to-[#3c2342]`,
   container: `max-w-[650px] m-auto rounded-md shadow-2xl`,
   container22: `flex flex-wrap bg-slate-200 p-4`,
   heading: `text-3xl font-bold text-center p-1`,
@@ -49,10 +46,14 @@ const Dashboard = () => {
   const { user, logout } = UserAuth();
   const [avatar, setAvatar] = useState('');
   const [gamerecords, setGameRecords] = useState([]);
-  const [bestScore, setBesetScore] = useState(0);
+  const [averageRating, setAverageRating] = useState(4);
+  const [bestScore, setBestScore] = useState(0);
   const [numberOfFinishedGames, setNumberOfFinishedGames] = useState(0);
   const [numberOfUnfinishedGames, setnumberOfUnfinishedGames] = useState(0);
+  const [numberTotalGames, setNumberTotalGames] = useState();
+  const [percentageProgress, setPercentageProgress] = useState(70);
   const [winRatePerc, setWinRatePerc] = useState(0);
+  const [badge, setBadge] = useState('bronze');
   const [screenName, setScreenName] = useState('');
   const [docId, setDocId] = useState('');
 
@@ -61,8 +62,17 @@ const Dashboard = () => {
     setAvatar(profileData?.avatar);
   };
 
-  //   console.log(user);
-  //   console.log(screenName);
+  const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+    height: 10,
+    borderRadius: 5,
+    [`&.${linearProgressClasses.colorPrimary}`]: {
+      backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+    },
+    [`& .${linearProgressClasses.bar}`]: {
+      borderRadius: 5,
+      backgroundColor: theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8',
+    },
+  }));
 
   const renderProfileData = () => {
     const colRef = collection(db, 'profile');
@@ -83,11 +93,11 @@ const Dashboard = () => {
       });
   };
 
-  const fetchGameRecords = () => {
+  const fetchGameRecords = async () => {
     const colRef = collection(db, 'gamerecords');
     let gamerecordsOfLoggedInUser = [];
 
-    getDocs(colRef)
+    await getDocs(colRef)
       .then(snapshot => {
         let gameRecords = [];
         snapshot?.docs?.forEach(doc => {
@@ -99,6 +109,26 @@ const Dashboard = () => {
           }
         });
         setGameRecords(gamerecordsOfLoggedInUser);
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  };
+
+  const fetchRatings = () => {
+    const colRef = collection(db, 'ratings');
+
+    getDocs(colRef)
+      .then(snapshot => {
+        let gameRecords = [];
+        snapshot?.docs?.forEach(doc => {
+          gameRecords?.push({ ...doc?.data(), id: doc.id });
+        });
+        const sumAllRatings = gameRecords
+          ?.map(doc => doc.numberOfStars)
+          .reduce((acc, curr) => acc + curr, 0);
+        const average = sumAllRatings / gameRecords?.length;
+        setAverageRating(average);
       })
       .catch(err => {
         console.log(err.message);
@@ -120,10 +150,40 @@ const Dashboard = () => {
         countUnfinishedGames = countUnfinishedGames + 1;
       }
     }
-    setBesetScore(bestScore);
+    setBestScore(bestScore);
     setNumberOfFinishedGames(countFinishedGames);
     setnumberOfUnfinishedGames(countUnfinishedGames);
     setWinRatePerc((countFinishedGames / gamerecords?.length) * 100);
+    setNumberTotalGames(gamerecords?.length);
+  };
+
+  const determineBadgeAndProgress = () => {
+    const numberGames = gamerecords?.length;
+
+    if (numberGames) {
+      switch (numberGames) {
+        case numberGames < 10:
+          setBadge('bronze');
+          setPercentageProgress((numberGames / 10) * 100);
+          break;
+        case numberGames < 20:
+          setBadge('silver');
+          setPercentageProgress(((numberGames - 10) / 10) * 100);
+          break;
+        case numberGames < 30:
+          setBadge('gold');
+          setPercentageProgress(((numberGames - 20) / 10) * 100);
+          break;
+        case numberGames < 40:
+          setBadge('platinum');
+          setPercentageProgress(((numberGames - 30) / 10) * 100);
+          break;
+        default:
+          setBadge('bronze');
+          setPercentageProgress(20);
+          break;
+      }
+    }
   };
 
   //   /*
@@ -135,11 +195,16 @@ const Dashboard = () => {
 
   useEffect(() => {
     fetchGameRecords();
+    fetchRatings();
   }, [user]);
 
   useEffect(() => {
     renderProfileData();
   }, [user]);
+
+  useEffect(() => {
+    determineBadgeAndProgress();
+  }, []);
 
   return (
     <>
@@ -150,8 +215,14 @@ const Dashboard = () => {
             <h3 className={style.heading}>Game Stats</h3>
             <div className='container mx-auto'>
               <div className='grid grid-cols-1 md:grid-cols-2'>
-                <div className='bg-gray-800 pl-14 pt-14'>
-                  <ImageAvatars avatar={'pic8'} />
+                <div className='bg-gray-800 pt-14'>
+                  <Badge badge={badge} />
+                  <Box sx={{ flexGrow: 1 }}>
+                    <BorderLinearProgress
+                      variant='determinate'
+                      value={percentageProgress}
+                    />
+                  </Box>
                 </div>
                 <div className='p-4 bg-gray-800'>
                   <p className='text-[30px] text-blue-600 font-mono'>
@@ -291,7 +362,7 @@ const Dashboard = () => {
               </div>
               <div className='p-4 bg-gray-200 text-gray-700'>
                 <p>Average Rating</p>
-                <Rating />
+                <AverageRating average={averageRating} />
               </div>
             </div>
           </div>

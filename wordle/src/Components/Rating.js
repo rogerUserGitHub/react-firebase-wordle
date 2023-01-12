@@ -30,9 +30,6 @@ export default function HoverRating() {
   const [hover, setHover] = useState(-1);
   const [userAlreadyRated, setUserAlreadyRated] = useState(false);
 
-  console.log(value);
-  console.log(userAlreadyRated);
-
   const getRatingData = async () => {
     const colRef = collection(db, 'ratings');
     let result = [];
@@ -43,20 +40,13 @@ export default function HoverRating() {
         snapshot.docs.forEach(doc => {
           ratingData?.push({ ...doc?.data(), id: doc.id });
         });
-        console.log(ratingData);
-
         ratingData?.forEach(record => {
           if (record?.uid === user?.uid) {
-            console.log('spring eriiiin');
             result.push(record);
             setUserAlreadyRated(true);
             setValue(record?.numberOfStars);
           }
         });
-        console.log(result[0]);
-        console.log(result?.uid);
-        console.log(result);
-        console.log(result.length);
       })
       .catch(err => {
         console.log(err.message);
@@ -65,7 +55,6 @@ export default function HoverRating() {
 
   const creatRatingRecord = async () => {
     var timestamp = Timestamp.fromDate(new Date());
-    console.log('springt in createecord');
     await addDoc(collection(db, 'ratings'), {
       uid: user.uid,
       date: timestamp,
@@ -79,13 +68,6 @@ export default function HoverRating() {
   useEffect(() => {
     getRatingData();
   }, [user]);
-
-  //   useEffect(() => {
-  //     if (!userAlreadyRated) {
-  //       console.log(userAlreadyRated);
-  //       creatRatingRecord();
-  //     }
-  //   }, [userAlreadyRated]);
 
   return (
     <Box

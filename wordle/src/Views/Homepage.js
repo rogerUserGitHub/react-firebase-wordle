@@ -9,7 +9,7 @@ import { Timestamp } from '@firebase/firestore';
 import ResponsiveAppBar from '../Components/AppBar.js';
 
 const style = {
-  bg: `h-screen w-screen p-7 bg-gradient-to-r from-[#2F89ED] to-[#1CB5E0]`,
+  bg: `h-screen w-screen p-7 bg-gradient-to-r from-[#132224] to-[#1CB5E0]`,
   container: `bg-slate-100 max-w-[500px] w-full m-auto rounded-md shadow-xl p-4`,
   container2: `bg-slate-100 max-w-[500px] w-full m-auto rounded-md shadow-xl p-2 pt-2 mt-5 flex flex-col items-center`,
   welcome: `text-2l font-bold text-center p-1`,
