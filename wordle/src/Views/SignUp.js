@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../Context/AuthContext';
 import Footer from '../Components/Footer.js';
-import { db } from 'C:/Users/RDIRKX87/source/repos/react-firebase-wordle/wordle/src/firebase.js';
-import { collection, addDoc } from 'firebase/firestore';
+import { db } from '../firebase.js';
+import { setDoc, doc } from 'firebase/firestore';
 
 const style = {
   bg: `h-screen w-screen p-4 bg-gradient-to-r from-blue-200 to-[#B0E0E6]`,
@@ -36,7 +36,7 @@ const SignUp = () => {
   };
 
   const createUser2 = async () => {
-    await addDoc(collection(db, 'profile'), {
+    await setDoc(doc(db, 'profile', user.uid), {
       uid: user?.uid,
       screenName: '',
       age: 98,

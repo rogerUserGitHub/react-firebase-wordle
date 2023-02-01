@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { db } from 'C:/Users/RDIRKX87/source/repos/react-firebase-wordle/wordle/src/firebase.js';
-import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase.js';
+import { collection, getDocs, doc, getDoc } from 'firebase/firestore';
 import 'firebase/firestore';
 import { UserAuth } from '../Context/AuthContext';
 import Rating from '../Components/Rating.js';
@@ -11,15 +11,14 @@ import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import ScoreboardIcon from '@mui/icons-material/Scoreboard';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import StarIcon from '@mui/icons-material/Star';
-import ImageAvatars from '../Components/Avatar';
 import Footer from '../Components/Footer';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 
 const style = {
-  bg: `p-7 bg-gradient-to-r from-[#13171f] to-[#3c2342]`,
-  container: `max-w-[650px] m-auto rounded-md shadow-2xl bg-slate-300`,
+  bg: `h-[calc(100vh-100px)] overflow-auto p-7 bg-gradient-to-r from-[#13171f] to-[#3c2342]`,
+  container: `max-w-[650px]  m-auto rounded-md shadow-2xl bg-slate-300`,
   container22: `flex flex-wrap bg-slate-200`,
   heading: `text-3xl font-bold text-center`,
   container33: `flex bg-slate-100 space-x-4 shadow-xl`,
@@ -46,22 +45,16 @@ const Dashboard = () => {
   const [gamerecords, setGameRecords] = useState([]);
   const [averageRating, setAverageRating] = useState(4);
   const [bestScore, setBestScore] = useState(0);
-  const [numberOfFinishedGames, setNumberOfFinishedGames] = useState(0);
-  const [numberOfUnfinishedGames, setnumberOfUnfinishedGames] = useState(0);
-  const [numberTotalProfiles, setNumberTotalProfiles] = useState(0);
   const [numberTotalGames, setNumberTotalGames] = useState();
   const [percentageProgress, setPercentageProgress] = useState(70);
   const [winRatePerc, setWinRatePerc] = useState(0);
   const [badge, setBadge] = useState('bronze');
   const [screenName, setScreenName] = useState('');
-  const [docId, setDocId] = useState('');
 
   const setValues = profileData => {
     setScreenName(profileData?.screenName);
     setAvatar(profileData?.avatar);
   };
-
-  console.log(numberTotalGames);
 
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
     height: 10,
@@ -75,24 +68,16 @@ const Dashboard = () => {
     },
   }));
 
-  const renderProfileData = () => {
-    const colRef = collection(db, 'profile');
-    let result;
+  const renderProfileData = async () => {
+    const docRef = doc(db, 'profile', user?.uid);
+    const docSnap = await getDoc(docRef);
 
-    getDocs(colRef)
-      .then(snapshot => {
-        let profileData = [];
-        snapshot?.docs?.forEach(doc => {
-          profileData?.push({ ...doc?.data(), id: doc.id });
-        });
-        const totalNumberProfiles = profileData.length;
-        setNumberTotalProfiles(totalNumberProfiles);
-        result = profileData?.find(obj => obj?.uid === user?.uid);
-        setValues(result);
-      })
-      .catch(err => {
-        console.log(err.message);
-      });
+    if (docSnap.exists()) {
+      setValues(docSnap?.data());
+      console.log('Document data:', docSnap.data());
+    } else {
+      console.log('No such document!');
+    }
   };
 
   const fetchGameRecords = async () => {
@@ -105,8 +90,7 @@ const Dashboard = () => {
         snapshot?.docs?.forEach(doc => {
           gameRecords?.push({ ...doc?.data(), id: doc.id });
         });
-        const totalNumberGames = gameRecords.length;
-        setNumberTotalGames(totalNumberGames);
+        setNumberTotalGames(gameRecords?.length);
         gameRecords?.forEach(record => {
           if (record?.uid === user?.uid) {
             gamerecordsOfLoggedInUser.push(record);
@@ -155,14 +139,11 @@ const Dashboard = () => {
       }
     }
     setBestScore(bestScore);
-    setNumberOfFinishedGames(countFinishedGames);
-    setnumberOfUnfinishedGames(countUnfinishedGames);
     setWinRatePerc(Math.floor((countFinishedGames / gamerecords?.length) * 100));
   };
 
   const determineBadgeAndProgress = () => {
-    const numberGames = gamerecords?.length;
-
+    const numberGames = gamerecords.length;
     if (numberGames) {
       switch (numberGames) {
         case numberGames < 10:
@@ -199,9 +180,6 @@ const Dashboard = () => {
   useEffect(() => {
     fetchGameRecords();
     fetchRatings();
-  }, [user]);
-
-  useEffect(() => {
     renderProfileData();
   }, [user]);
 
@@ -225,6 +203,9 @@ const Dashboard = () => {
                     value={percentageProgress}
                   />
                 </Box>
+                <p className='text-center text-white font-mono font-bold'>
+                  {percentageProgress}
+                </p>
               </div>
               <div className='p-4 bg-gray-800'>
                 <p className='text-[30px] text-blue-600 font-mono'>
@@ -240,27 +221,17 @@ const Dashboard = () => {
                   <WorkspacePremiumIcon /> % win rate{' '}
                 </p>
                 <p className='text-white font-mono font-bold'>{winRatePerc}</p>
-                <p className='text-[30px] text-blue-600 font-mono'>
-                  <StarIcon /> rank{' '}
-                </p>
-                <p className='text-white font-mono font-bold'>xxxxx</p>
               </div>
             </div>
 
             <div className='container mx-auto'>
               <h3 className={style.heading}>App Stats</h3>
-              <div className='grid grid-cols-1 md:grid-cols-2'>
-                <div className='p-4 bg-gray-700 text-green-700'>
-                  <p className='text-[30px] text-blue-700 font-mono'>
-                    # of active users
-                  </p>
-                  <p>{numberTotalProfiles}</p>
-                </div>
-                <div className='p-4 bg-gray-700 text-green-700'>
+              <div className='grid grid-cols-1 md:grid-cols-1'>
+                <div className='p-4 bg-gray-800'>
                   <p className='text-[30px] text-blue-700 font-mono'>
                     # of games played
                   </p>
-                  <p>{numberTotalGames}</p>
+                  <p className='text-white font-mono font-bold'>{numberTotalGames}</p>
                 </div>
               </div>
             </div>
@@ -352,7 +323,7 @@ const Dashboard = () => {
             </div>
           </div> */}
 
-          <h3 className={style.heading}>Word of the day</h3>
+          {/* <h3 className={style.heading}>Word of the day</h3>
           <div className='container mx-auto'>
             <div className='grid grid-cols-1 md:grid-cols-2'>
               <div className='bg-gray-200 pl-14 pt-14'>
@@ -369,7 +340,7 @@ const Dashboard = () => {
                 <p className='text-red-500 font-mono'>xxxxx</p>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className='container mx-auto'>
             <h3 className={style.heading}>Rating</h3>

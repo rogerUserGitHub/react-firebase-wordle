@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { db } from 'C:/Users/RDIRKX87/source/repos/react-firebase-wordle/wordle/src/firebase.js';
-import { collection, updateDoc, doc, getDocs } from 'firebase/firestore';
+import { db } from '../firebase.js';
+import { updateDoc, doc, getDoc } from 'firebase/firestore';
 import 'firebase/firestore';
 import { UserAuth } from '../Context/AuthContext';
 import Footer from '../Components/Footer.js';
@@ -18,8 +18,8 @@ import CountryList from '../Utils/CountryList';
 
 const style = {
   bg: `h-screen w-screen p-7 bg-gradient-to-r from-[#132417] to-[#2a5435]`,
-  container: `flex-wrap bg-slate-100 max-w-[1000px] m-auto rounded-md shadow-xl`,
-  container2: `bg-slate-250 max-w-[1000px] m-auto rounded-md shadow-xl pl-12`,
+  container: `flex-wrap bg-slate-100 max-w-[650px] m-auto rounded-md shadow-xl pb-200`,
+  container2: `bg-slate-250 max-w-[1000px] rounded-md shadow-xl pl-2`,
   container3: `bg-slate-250 container max-w-[1000px]`,
   container4: `max-w-[1000px] m-auto rounded-md pb-10 p-4`,
   container5: `bg-slate-250 max-w-[1000px] m-auto rounded-md shadow-xl pb-4 p-4 pl-12`,
@@ -54,27 +54,21 @@ const Profile = () => {
   console.log(user);
   console.log(screenName);
 
-  const renderProfileData = () => {
-    const colRef = collection(db, 'profile');
-    let result;
+  const renderProfileData = async () => {
+    const docRef = doc(db, 'profile', user?.uid);
+    const docSnap = await getDoc(docRef);
 
-    getDocs(colRef)
-      .then(snapshot => {
-        let profileData = [];
-        snapshot?.docs?.forEach(doc => {
-          profileData?.push({ ...doc?.data(), id: doc.id });
-        });
-        result = profileData?.find(obj => obj?.uid === user?.uid);
-        setDocId(result?.id);
-        setValues(result);
-      })
-      .catch(err => {
-        console.log(err.message);
-      });
+    if (docSnap.exists()) {
+      setValues(docSnap.data());
+
+      console.log('Document data:', docSnap.data());
+    } else {
+      console.log('No such document!');
+    }
   };
 
   const updateProfile = async () => {
-    await updateDoc(doc(db, 'profile', docId), {
+    await updateDoc(doc(db, 'profile', user?.uid), {
       screenName: screenName,
       age: age,
       country: country,

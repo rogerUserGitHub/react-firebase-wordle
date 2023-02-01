@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import StarIcon from '@mui/icons-material/Star';
-import { db } from 'C:/Users/RDIRKX87/source/repos/react-firebase-wordle/wordle/src/firebase.js';
+import { db } from '../firebase.js';
 import { collection, addDoc, updateDoc, doc, getDocs } from 'firebase/firestore';
 import { Timestamp } from '@firebase/firestore';
 import { UserAuth } from '../Context/AuthContext';
@@ -41,7 +41,7 @@ export default function HoverRating() {
           ratingData?.push({ ...doc?.data(), id: doc.id });
         });
         ratingData?.forEach(record => {
-          if (record?.uid === user?.uid) {
+          if (record?.uid === user?.uid && record?.numberOfStars != null) {
             result.push(record);
             setUserAlreadyRated(true);
             setValue(record?.numberOfStars);

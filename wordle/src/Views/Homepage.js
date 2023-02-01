@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { db } from 'C:/Users/RDIRKX87/source/repos/react-firebase-wordle/wordle/src/firebase.js';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { db } from '../firebase.js';
+import { collection, addDoc, doc, getDoc } from 'firebase/firestore';
 import { UserAuth } from '../Context/AuthContext';
 import Footer from '../Components/Footer.js';
 import Attempt from '../Components/Attempt.js';
@@ -45,25 +45,19 @@ const Homepage = () => {
     });
   };
 
-  // first checks if profile exists. If not, new one is made
-  const getProfileData = () => {
+  const getProfileData = async () => {
     const colRef = collection(db, 'profile');
+    console.log(colRef);
 
-    getDocs(colRef)
-      .then(snapshot => {
-        let profileData = [];
-        snapshot?.docs?.forEach(doc => {
-          profileData?.push({ ...doc?.data(), id: doc?.id });
-        });
-        let result = profileData?.find(obj => obj?.uid === user?.uid);
-        console.log(result);
-        if (result) {
-          setAvatar(result.avatar);
-        }
-      })
-      .catch(err => {
-        console.log(err.message);
-      });
+    const docRef = doc(db, 'profile', user?.uid);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      setAvatar(docSnap.data().avatar);
+      console.log('Document data:', docSnap.data());
+    } else {
+      console.log('No such document!');
+    }
   };
 
   const handleGuess = boolean => {
@@ -94,7 +88,7 @@ const Homepage = () => {
 
   useEffect(() => {
     getProfileData();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     if (isFinished || numberOfTries === 6) {

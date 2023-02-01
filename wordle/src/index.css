@@ -29,7 +29,7 @@ html, body {
 }
 
 .footer {
-  position: fixed; 
+  position: relative; 
   bottom: 1px;
   width: 100%;
 }
