@@ -10,38 +10,25 @@ import ResponsiveAppBar from '../Components/AppBar.js';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import ScoreboardIcon from '@mui/icons-material/Scoreboard';
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
-import StarIcon from '@mui/icons-material/Star';
 import Footer from '../Components/Footer';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 
 const style = {
-  bg: `h-[calc(100vh-100px)] overflow-auto p-7 bg-gradient-to-r from-[#13171f] to-[#3c2342]`,
+  bg: `h-[calc(100vh-100px)] overflow-auto p-7 bg-gradient-to-r from-[#aba6ff] to-[#42d9d6]`,
   container: `max-w-[650px]  m-auto rounded-md shadow-2xl bg-slate-300`,
   container22: `flex flex-wrap bg-slate-200`,
   heading: `text-3xl font-bold text-center`,
   container33: `flex bg-slate-100 space-x-4 shadow-xl`,
   item: `bg-blue-200 p-3 rounded-md`,
   avatar: `content-end`,
-  //
-  container2: `bg-slate-250 max-w-[1000px] m-auto rounded-md shadow-xl pb-10 p-4 pl-12`,
-  container3: `bg-slate-250 container max-w-[1000px]`,
-  container4: `max-w-[1000px] m-auto rounded-md pb-10 p-4`,
-  container5: `bg-slate-250 max-w-[1000px] m-auto rounded-md shadow-xl pb-10 p-4 pl-12`,
-  welcome: `text-2l font-bold text-center p-1`,
-
-  avatarDialog: `p-5`,
-  form: `flex justify-between`,
-  input: `border w-full text-xl`,
-  button: `pt-8`,
-  logoutButton: `inline-flex items-center justify-center p-0.5  text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-grey-500 to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800`,
-  logOutButtonSpan: `px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0`,
 };
 
 const Dashboard = () => {
   const { user, logout } = UserAuth();
   const [avatar, setAvatar] = useState('');
+  const [language, setLanguage] = useState('');
   const [gamerecords, setGameRecords] = useState([]);
   const [averageRating, setAverageRating] = useState(4);
   const [bestScore, setBestScore] = useState(0);
@@ -54,6 +41,7 @@ const Dashboard = () => {
   const setValues = profileData => {
     setScreenName(profileData?.screenName);
     setAvatar(profileData?.avatar);
+    setLanguage(profileData?.language);
   };
 
   const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -189,13 +177,13 @@ const Dashboard = () => {
 
   return (
     <>
-      <ResponsiveAppBar avatar={avatar} logout={logout} />
+      <ResponsiveAppBar avatar={avatar} language={language} logout={logout} />
       <div className={style.bg}>
         <div className={style.container}>
           <h3 className={style.heading}>Player Stats</h3>
           <div className='container mx-auto '>
             <div className='grid grid-cols-1 md:grid-cols-2 '>
-              <div className='bg-gray-800 pt-14 '>
+              <div className='bg-gray-800 p-14 '>
                 <Badge badge={badge} />
                 <Box sx={{ flexGrow: 1 }}>
                   <BorderLinearProgress
@@ -204,7 +192,7 @@ const Dashboard = () => {
                   />
                 </Box>
                 <p className='text-center text-white font-mono font-bold'>
-                  {percentageProgress}
+                  {percentageProgress} %
                 </p>
               </div>
               <div className='p-4 bg-gray-800'>
@@ -228,120 +216,16 @@ const Dashboard = () => {
               <h3 className={style.heading}>App Stats</h3>
               <div className='grid grid-cols-1 md:grid-cols-1'>
                 <div className='p-4 bg-gray-800'>
-                  <p className='text-[30px] text-blue-700 font-mono'>
+                  <p className='text-[30px] text-blue-700 font-mono text-center'>
                     # of games played
                   </p>
-                  <p className='text-white font-mono font-bold'>{numberTotalGames}</p>
+                  <p className='text-white font-mono font-bold text-center'>
+                    {numberTotalGames}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
-
-          {/* <div className={style.containerKeyStats}>
-            <h3 className={style.heading}>Other</h3>
-            <div className='container mx-auto'>
-              <div className='grid grid-cols-1 md:grid-cols-2'>
-                <div className='bg-gray-200 pl-14 pt-14'>
-                  <ImageAvatars avatar={'pic8'} />
-                </div>
-                <div className='p-4 bg-green-100'>
-                  <p className='text-[30px] text-blue-700 font-mono'># of Games</p>
-                  <p className='text-red-500 font-mono'>{gamerecords?.length}</p>
-                  <p className='text-[30px] text-blue-700 font-mono'>Best Score</p>
-                  <p className='text-red-500 font-mono'>{bestScore}</p>
-                  <p className='text-[30px] text-blue-700 font-mono'>% Win Rate </p>
-                  <p className='text-red-500 font-mono'>{winRatePerc}</p>
-                  <p className='text-[30px] text-blue-700 font-mono'>Rank </p>
-                  <p className='text-red-500 font-mono'>xxxxx</p>
-                </div>
-              </div>
-            </div>
-          </div> */}
-
-          {/* <div className={style.containerKeyStats}>
-            <div className='container mx-auto'>
-              <h3 className={style.heading}>Game Stats</h3>
-              <div className='grid grid-cols-1 md:grid-cols-2'>
-                <div className='p-4 bg-gray-200 text-gray-700'>
-                  <p className='text-[30px] text-blue-600 font-mono'># of users</p>
-                  <p>{numberTotalProfiles}</p>
-                </div>
-                <div className='p-4 bg-gray-200 text-gray-700'>
-                  <p className='text-[30px] text-blue-600 font-mono'>
-                    # of games played
-                  </p>
-                  <p>{numberTotalGames}</p>
-                </div>
-              </div>
-            </div>
-          </div> */}
-
-          {/* <div className='container mx-auto'>
-            <div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1'>
-              <div className='p-4 bg-gray-200 text-gray-700'>
-                <p>Left Column</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-              <div className='p-4 bg-gray-200 text-gray-700'>
-                <p>Right Column</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </div>
-          </div>
-
-          <div className='container mx-auto'>
-            <div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1'>
-              <div className='p-4 bg-gray-200 text-gray-700'>
-                <p>Left Column xxxx</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-              <div className='p-4 bg-gray-200 text-gray-700'>
-                <p>Right Column xxxx</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </div>
-          </div> */}
-
-          {/* <div className='container mx-auto'>
-            <div className='grid grid-cols-1 md:grid-cols-4'>
-              <div className='p-4 bg-gray-200 text-gray-700'>
-                <p>Left Column</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-              <div className='p-4 bg-gray-200 text-gray-700'>
-                <p>Right Column</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-              <div className='p-4 bg-gray-200 text-gray-700'>
-                <p>Right Column</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-              <div className='p-4 bg-gray-200 text-gray-700'>
-                <p>Right Column</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              </div>
-            </div>
-          </div> */}
-
-          {/* <h3 className={style.heading}>Word of the day</h3>
-          <div className='container mx-auto'>
-            <div className='grid grid-cols-1 md:grid-cols-2'>
-              <div className='bg-gray-200 pl-14 pt-14'>
-                <ImageAvatars avatar={'pic8'} />
-              </div>
-              <div className='p-4 bg-green-100'>
-                <p className='text-[30px] text-blue-700 font-mono'># of Games</p>
-                <p className='text-red-500 font-mono'>{gamerecords?.length}</p>
-                <p className='text-[30px] text-blue-700 font-mono'>Best Score</p>
-                <p className='text-red-500 font-mono'>{bestScore}</p>
-                <p className='text-[30px] text-blue-700 font-mono'>% Win Rate </p>
-                <p className='text-red-500 font-mono'>{winRatePerc}</p>
-                <p className='text-[30px] text-blue-700 font-mono'>Rank </p>
-                <p className='text-red-500 font-mono'>xxxxx</p>
-              </div>
-            </div>
-          </div> */}
-
           <div className='container mx-auto'>
             <h3 className={style.heading}>Rating</h3>
             <div className='grid grid-cols-1 md:grid-cols-2'>
@@ -350,7 +234,7 @@ const Dashboard = () => {
                 <Rating />
               </div>
               <div className='p-4 bg-gray-200 text-gray-700'>
-                <p>Average Rating</p>
+                <p>Average Rating All Users</p>
                 <AverageRating average={averageRating} />
               </div>
             </div>

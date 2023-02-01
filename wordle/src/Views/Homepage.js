@@ -9,7 +9,7 @@ import { Timestamp } from '@firebase/firestore';
 import ResponsiveAppBar from '../Components/AppBar.js';
 
 const style = {
-  bg: `h-screen w-screen p-7 bg-gradient-to-r from-[#132224] to-[#1CB5E0]`,
+  bg: `h-screen w-screen p-7 bg-gradient-to-r from-[#aba6ff] to-[#42d9d6]`,
   container: `bg-slate-100 max-w-[500px] w-full m-auto rounded-md shadow-xl p-4`,
   container2: `bg-slate-100 max-w-[500px] w-full m-auto rounded-md shadow-xl p-2 pt-2 mt-5 flex flex-col items-center`,
   welcome: `text-2l font-bold text-center p-1`,
@@ -22,12 +22,12 @@ const style = {
 };
 
 const Homepage = () => {
-  const [wordList, setWordList] = useState([]);
   const [word, setWord] = useState('tests');
+  const [language, setLanguage] = useState('');
   const [isGuessed, setIsGuessed] = useState(false);
   const [isFinished, setIsFinished] = useState(false);
   const [numberOfTries, setNumberOfTries] = useState(0);
-  // const [profileExists, setProfileExists] = useState(true);
+  const [profileData, setProfileData] = useState({});
   const [avatar, setAvatar] = useState('');
 
   const { user, logout } = UserAuth();
@@ -53,7 +53,10 @@ const Homepage = () => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      setAvatar(docSnap.data().avatar);
+      console.log(docSnap.data());
+      setProfileData(docSnap?.data());
+      setAvatar(docSnap?.data()?.avatar);
+      setLanguage(docSnap?.data()?.language);
       console.log('Document data:', docSnap.data());
     } else {
       console.log('No such document!');
@@ -77,14 +80,22 @@ const Homepage = () => {
    * side effects
    */
   useEffect(() => {
-    fetch('./data/WordList.json')
-      .then(response => response.json())
-      .then(json => {
-        const randomNumber = Math.floor(Math.random() * json.length);
-        setWord(json[randomNumber]);
-        setWordList(json);
-      });
-  }, []);
+    if (profileData?.language === 'English') {
+      fetch('./data/WordList.json')
+        .then(response => response.json())
+        .then(json => {
+          const randomNumber = Math.floor(Math.random() * json.length);
+          setWord(json[randomNumber]);
+        });
+    } else {
+      fetch('./data/WordListNL.json')
+        .then(response => response.json())
+        .then(json => {
+          const randomNumber = Math.floor(Math.random() * json.length);
+          setWord(json[randomNumber]);
+        });
+    }
+  }, [language]);
 
   useEffect(() => {
     getProfileData();
@@ -98,10 +109,15 @@ const Homepage = () => {
 
   return (
     <>
-      <ResponsiveAppBar avatar={avatar} logout={logout} />
+      <ResponsiveAppBar avatar={avatar} language={language} logout={logout} />
       <div className={style.bg}>
         <div className={style.container}>
-          <h2 className={style.welcome}>Welcome {user.email}</h2>
+          <h2 className={style.welcome}>
+            Welcome{' '}
+            {profileData?.screenName !== null
+              ? profileData?.screenName
+              : profileData?.email}
+          </h2>
           <h3 className={style.heading}>Wordle</h3>
           <Attempt
             word={word}

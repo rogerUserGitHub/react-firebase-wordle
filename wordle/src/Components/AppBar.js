@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
 
-const pages = ['About'];
+const pages = [];
 
 const CustomLink = ({ to, children, ...props }) => {
   return (
@@ -24,7 +24,7 @@ const CustomLink = ({ to, children, ...props }) => {
   );
 };
 
-const ResponsiveAppBar = ({ avatar, logout }) => {
+const ResponsiveAppBar = ({ avatar, language, logout }) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -45,6 +45,10 @@ const ResponsiveAppBar = ({ avatar, logout }) => {
 
   const setSource = () => {
     return `${avatar}.webp`;
+  };
+
+  const setLanguage = () => {
+    return `${language}.webp`;
   };
 
   return (
@@ -137,6 +141,9 @@ const ResponsiveAppBar = ({ avatar, logout }) => {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
+            <IconButton sx={{ paddingRight: 2 }}>
+              <Avatar alt='P' src={setLanguage()} />
+            </IconButton>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt='P' src={setSource()} />

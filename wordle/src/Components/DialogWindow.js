@@ -18,10 +18,6 @@ export const DialogWindow = ({ isGuessed, numberOfTries }) => {
     window.location.reload();
   };
 
-  const handleToProfile = () => {
-    setOpen(false);
-  };
-
   /*
    * side effects
    */
@@ -36,7 +32,6 @@ export const DialogWindow = ({ isGuessed, numberOfTries }) => {
       <Dialog
         fullScreen={fullScreen}
         open={open}
-        // onClose={handleClose}
         aria-labelledby='responsive-dialog-title'
       >
         {isGuessed ? (
@@ -55,9 +50,6 @@ export const DialogWindow = ({ isGuessed, numberOfTries }) => {
         <DialogActions>
           <Button autoFocus onClick={handlePlayAgain}>
             Play again
-          </Button>
-          <Button onClick={handlePlayAgain} autoFocus>
-            Profile
           </Button>
         </DialogActions>
       </Dialog>

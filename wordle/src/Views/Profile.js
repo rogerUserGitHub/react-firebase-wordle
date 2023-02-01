@@ -17,7 +17,7 @@ import Select from '@mui/material/Select';
 import CountryList from '../Utils/CountryList';
 
 const style = {
-  bg: `h-screen w-screen p-7 bg-gradient-to-r from-[#132417] to-[#2a5435]`,
+  bg: `h-screen w-screen p-7 bg-gradient-to-r from-[#aba6ff] to-[#42d9d6]`,
   container: `flex-wrap bg-slate-100 max-w-[650px] m-auto rounded-md shadow-xl pb-200`,
   container2: `bg-slate-250 max-w-[1000px] rounded-md shadow-xl pl-2`,
   container3: `bg-slate-250 container max-w-[1000px]`,
@@ -91,7 +91,7 @@ const Profile = () => {
 
   return (
     <>
-      <ResponsiveAppBar avatar={avatar} logout={logout} />
+      <ResponsiveAppBar avatar={avatar} language={language} logout={logout} />
       <div className={style.bg}>
         <div className={style.container}>
           <div className={style.container2}>
