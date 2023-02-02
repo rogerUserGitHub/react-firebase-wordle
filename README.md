@@ -2,7 +2,7 @@
 
 ## General info
 
-This is app is built with React.js and is a Wordle clone, using firebase-auth and firebase-firestore. The app is hosted using firebase hosting.
+This is app is built with React.js and is a Wordle-inspired game, using firebase-auth and firebase-firestore. The app is hosted using firebase hosting.
 
 Live version is coming soon.
 
@@ -14,6 +14,6 @@ Project is created with:
 - javascript
 - tailwind
 - MUI
-- firebase-auth 
+- firebase-auth
 - firebase-firestore
 - firebase hosting

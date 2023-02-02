@@ -26,6 +26,39 @@ const Attempt = ({ word, handleNumberOfTries, isGuessed }) => {
 
   const stringLetters = word.split('');
 
+  const inputs = [
+    { id: 1, disabled: disableRow1, valueIndex: 0 },
+    { id: 2, disabled: disableRow1, valueIndex: 1 },
+    { id: 3, disabled: disableRow1, valueIndex: 2 },
+    { id: 4, disabled: disableRow1, valueIndex: 3 },
+    { id: 5, disabled: disableRow1, valueIndex: 4 },
+    { id: 6, disabled: disableRow2, valueIndex: 5 },
+    { id: 7, disabled: disableRow2, valueIndex: 6 },
+    { id: 8, disabled: disableRow2, valueIndex: 7 },
+    { id: 9, disabled: disableRow2, valueIndex: 8 },
+    { id: 10, disabled: disableRow2, valueIndex: 9 },
+    { id: 11, disabled: disableRow3, valueIndex: 10 },
+    { id: 12, disabled: disableRow3, valueIndex: 11 },
+    { id: 13, disabled: disableRow3, valueIndex: 12 },
+    { id: 14, disabled: disableRow3, valueIndex: 13 },
+    { id: 15, disabled: disableRow3, valueIndex: 14 },
+    { id: 16, disabled: disableRow4, valueIndex: 15 },
+    { id: 17, disabled: disableRow4, valueIndex: 16 },
+    { id: 18, disabled: disableRow4, valueIndex: 17 },
+    { id: 19, disabled: disableRow4, valueIndex: 18 },
+    { id: 20, disabled: disableRow4, valueIndex: 19 },
+    { id: 21, disabled: disableRow5, valueIndex: 20 },
+    { id: 22, disabled: disableRow5, valueIndex: 21 },
+    { id: 23, disabled: disableRow5, valueIndex: 22 },
+    { id: 24, disabled: disableRow5, valueIndex: 23 },
+    { id: 25, disabled: disableRow5, valueIndex: 24 },
+    { id: 26, disabled: disableRow6, valueIndex: 25 },
+    { id: 27, disabled: disableRow6, valueIndex: 26 },
+    { id: 28, disabled: disableRow6, valueIndex: 27 },
+    { id: 29, disabled: disableRow6, valueIndex: 28 },
+    { id: 30, disabled: disableRow6, valueIndex: 29 },
+  ];
+
   const passIsGuessedBack = () => {
     isGuessed(true);
   };
@@ -38,7 +71,7 @@ const Attempt = ({ word, handleNumberOfTries, isGuessed }) => {
     let arrayOfInputLetters = [...attempt];
 
     if (index !== -1) {
-      arrayOfInputLetters[index] = letterInput;
+      arrayOfInputLetters[index] = letterInput.toLowerCase();
     }
     setAttempt(arrayOfInputLetters);
 
@@ -144,246 +177,17 @@ const Attempt = ({ word, handleNumberOfTries, isGuessed }) => {
       <div className={style.container}>
         <form onSubmit={null}>
           <div>
-            <input
-              className={determineStyle(0)}
-              onChange={e => handleInput(e.target.value, 0)}
-              type='text'
-              maxLength={1}
-              id={1}
-              disabled={disableRow1}
-            />
-            <input
-              className={determineStyle(1)}
-              onChange={e => handleInput(e.target.value, 1)}
-              type='text'
-              maxLength={1}
-              id={2}
-              disabled={disableRow1}
-            />
-            <input
-              className={determineStyle(2)}
-              onChange={e => handleInput(e.target.value, 2)}
-              type='text'
-              maxLength={1}
-              id={3}
-              disabled={disableRow1}
-            />
-            <input
-              className={determineStyle(3)}
-              onChange={e => handleInput(e.target.value, 3)}
-              type='text'
-              maxLength={1}
-              id={4}
-              disabled={disableRow1}
-            />
-            <input
-              className={determineStyle(4)}
-              onChange={e => handleInput(e.target.value, 4)}
-              type='text'
-              maxLength={1}
-              id={5}
-              disabled={disableRow1}
-            />
-            <input
-              className={determineStyle(5)}
-              onChange={e => handleInput(e.target.value, 5)}
-              type='text'
-              maxLength={1}
-              id={6}
-              disabled={disableRow2}
-            />
-            <input
-              className={determineStyle(6)}
-              onChange={e => handleInput(e.target.value, 6)}
-              type='text'
-              maxLength={1}
-              id={7}
-              disabled={disableRow2}
-            />
-            <input
-              className={determineStyle(7)}
-              onChange={e => handleInput(e.target.value, 7)}
-              type='text'
-              maxLength={1}
-              id={8}
-              disabled={disableRow2}
-            />
-            <input
-              className={determineStyle(8)}
-              onChange={e => handleInput(e.target.value, 8)}
-              type='text'
-              maxLength={1}
-              id={9}
-              disabled={disableRow2}
-            />
-            <input
-              className={determineStyle(9)}
-              onChange={e => handleInput(e.target.value, 9)}
-              type='text'
-              maxLength={1}
-              id={10}
-              disabled={disableRow2}
-            />
-            <input
-              className={determineStyle(10)}
-              onChange={e => handleInput(e.target.value, 10)}
-              type='text'
-              maxLength={1}
-              id={11}
-              disabled={disableRow3}
-            />
-            <input
-              className={determineStyle(11)}
-              onChange={e => handleInput(e.target.value, 11)}
-              type='text'
-              maxLength={1}
-              id={12}
-              disabled={disableRow3}
-            />
-            <input
-              className={determineStyle(12)}
-              onChange={e => handleInput(e.target.value, 12)}
-              type='text'
-              maxLength={1}
-              id={13}
-              disabled={disableRow3}
-            />
-            <input
-              className={determineStyle(13)}
-              onChange={e => handleInput(e.target.value, 13)}
-              type='text'
-              maxLength={1}
-              id={14}
-              disabled={disableRow3}
-            />
-            <input
-              className={determineStyle(14)}
-              onChange={e => handleInput(e.target.value, 14)}
-              type='text'
-              maxLength={1}
-              id={15}
-              disabled={disableRow3}
-            />
-            <input
-              className={determineStyle(15)}
-              onChange={e => handleInput(e.target.value, 15)}
-              type='text'
-              maxLength={1}
-              id={16}
-              disabled={disableRow4}
-            />
-            <input
-              className={determineStyle(16)}
-              onChange={e => handleInput(e.target.value, 16)}
-              type='text'
-              maxLength={1}
-              id={17}
-              disabled={disableRow4}
-            />
-            <input
-              className={determineStyle(17)}
-              onChange={e => handleInput(e.target.value, 17)}
-              type='text'
-              maxLength={1}
-              id={18}
-              disabled={disableRow4}
-            />
-            <input
-              className={determineStyle(18)}
-              onChange={e => handleInput(e.target.value, 18)}
-              type='text'
-              maxLength={1}
-              id={19}
-              disabled={disableRow4}
-            />
-            <input
-              className={determineStyle(19)}
-              onChange={e => handleInput(e.target.value, 19)}
-              type='text'
-              maxLength={1}
-              id={20}
-              disabled={disableRow4}
-            />
-            <input
-              className={determineStyle(20)}
-              onChange={e => handleInput(e.target.value, 20)}
-              type='text'
-              maxLength={1}
-              id={21}
-              disabled={disableRow5}
-            />
-            <input
-              className={determineStyle(21)}
-              onChange={e => handleInput(e.target.value, 21)}
-              type='text'
-              maxLength={1}
-              id={11}
-              disabled={disableRow5}
-            />
-            <input
-              className={determineStyle(22)}
-              onChange={e => handleInput(e.target.value, 22)}
-              type='text'
-              maxLength={1}
-              id={12}
-              disabled={disableRow5}
-            />
-            <input
-              className={determineStyle(23)}
-              onChange={e => handleInput(e.target.value, 23)}
-              type='text'
-              maxLength={1}
-              id={13}
-              disabled={disableRow5}
-            />
-            <input
-              className={determineStyle(24)}
-              onChange={e => handleInput(e.target.value, 24)}
-              type='text'
-              maxLength={1}
-              id={14}
-              disabled={disableRow5}
-            />
-            <input
-              className={determineStyle(25)}
-              onChange={e => handleInput(e.target.value, 25)}
-              type='text'
-              maxLength={1}
-              id={15}
-              disabled={disableRow6}
-            />
-            <input
-              className={determineStyle(26)}
-              onChange={e => handleInput(e.target.value, 26)}
-              type='text'
-              maxLength={1}
-              id={16}
-              disabled={disableRow6}
-            />
-            <input
-              className={determineStyle(27)}
-              onChange={e => handleInput(e.target.value, 27)}
-              type='text'
-              maxLength={1}
-              id={17}
-              disabled={disableRow6}
-            />
-            <input
-              className={determineStyle(28)}
-              onChange={e => handleInput(e.target.value, 28)}
-              type='text'
-              maxLength={1}
-              id={18}
-              disabled={disableRow6}
-            />
-            <input
-              className={determineStyle(29)}
-              onChange={e => handleInput(e.target.value, 29)}
-              type='text'
-              maxLength={1}
-              id={19}
-              disabled={disableRow6}
-            />
+            {inputs.map(input => (
+              <input
+                key={input.id}
+                className={determineStyle(input.valueIndex)}
+                onChange={e => handleInput(e.target.value, input.valueIndex)}
+                type='text'
+                maxLength={1}
+                id={input.id}
+                disabled={input.disabled}
+              />
+            ))}
           </div>
         </form>
       </div>

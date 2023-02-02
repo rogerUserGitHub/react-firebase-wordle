@@ -149,9 +149,9 @@ const Profile = () => {
                   ))}
                 </Select>
               </FormControl>
-              <FormControl sx={{ minWidth: 400 }}>
+              <FormControl sx={{ width: 400 }}>
                 <InputLabel id='demo-simple-select-autowidth-label'>
-                  Language
+                  WordJam Language
                 </InputLabel>
                 <Select
                   labelId='demo-simple-select-autowidth-label'
@@ -159,7 +159,7 @@ const Profile = () => {
                   value={language}
                   onChange={e => setLanguage(e.target.value)}
                   autoWidth
-                  label='country'
+                  label='WordJam Language'
                 >
                   <MenuItem value={'Dutch'}>Dutch</MenuItem>
                   <MenuItem value={'English'}>English</MenuItem>

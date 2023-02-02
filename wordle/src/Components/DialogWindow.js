@@ -44,7 +44,7 @@ export const DialogWindow = ({ isGuessed, numberOfTries }) => {
 
         <DialogContent>
           <DialogContentText>
-            Keep playing to get better at Wordle and increase your overall score !
+            Keep playing to get better at WordJam and increase your overall score !
           </DialogContentText>
         </DialogContent>
         <DialogActions>

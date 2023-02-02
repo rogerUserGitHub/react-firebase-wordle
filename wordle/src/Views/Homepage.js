@@ -118,7 +118,6 @@ const Homepage = () => {
               ? profileData?.screenName
               : profileData?.email}
           </h2>
-          <h3 className={style.heading}>Wordle</h3>
           <Attempt
             word={word}
             handleNumberOfTries={handleNumberOfTries}

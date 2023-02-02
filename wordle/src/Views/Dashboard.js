@@ -35,7 +35,7 @@ const Dashboard = () => {
   const [numberTotalGames, setNumberTotalGames] = useState();
   const [percentageProgress, setPercentageProgress] = useState(70);
   const [winRatePerc, setWinRatePerc] = useState(0);
-  const [badge, setBadge] = useState('bronze');
+  const [badge, setBadge] = useState('');
   const [screenName, setScreenName] = useState('');
 
   const setValues = profileData => {
@@ -130,31 +130,23 @@ const Dashboard = () => {
     setWinRatePerc(Math.floor((countFinishedGames / gamerecords?.length) * 100));
   };
 
+  console.log(gamerecords);
+
   const determineBadgeAndProgress = () => {
     const numberGames = gamerecords.length;
-    if (numberGames) {
-      switch (numberGames) {
-        case numberGames < 10:
-          setBadge('bronze');
-          setPercentageProgress((numberGames / 10) * 100);
-          break;
-        case numberGames < 20:
-          setBadge('silver');
-          setPercentageProgress(((numberGames - 10) / 10) * 100);
-          break;
-        case numberGames < 30:
-          setBadge('gold');
-          setPercentageProgress(((numberGames - 20) / 10) * 100);
-          break;
-        case numberGames < 40:
-          setBadge('platinum');
-          setPercentageProgress(((numberGames - 30) / 10) * 100);
-          break;
-        default:
-          setBadge('bronze');
-          setPercentageProgress(20);
-          break;
-      }
+    console.log(numberGames);
+    if (numberGames < 10) {
+      setBadge('bronze');
+      setPercentageProgress((numberGames / 10) * 100);
+    } else if (numberGames > 9 && numberGames < 20) {
+      setBadge('silver');
+      setPercentageProgress(((numberGames - 10) / 10) * 100);
+    } else if (numberGames > 19 && numberGames < 30) {
+      setBadge('gold');
+      setPercentageProgress(((numberGames - 20) / 10) * 100);
+    } else {
+      setBadge('platinum');
+      setPercentageProgress(((numberGames - 30) / 10) * 100);
     }
   };
 
@@ -163,6 +155,7 @@ const Dashboard = () => {
   //    */
   useEffect(() => {
     determineBestScore();
+    determineBadgeAndProgress();
   }, [gamerecords]);
 
   useEffect(() => {
@@ -170,10 +163,6 @@ const Dashboard = () => {
     fetchRatings();
     renderProfileData();
   }, [user]);
-
-  useEffect(() => {
-    determineBadgeAndProgress();
-  }, []);
 
   return (
     <>
