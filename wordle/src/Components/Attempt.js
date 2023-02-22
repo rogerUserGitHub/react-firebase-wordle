@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { AutoTabProvider } from 'react-auto-tab';
+
 import Keyboard from './Keyboard';
 
 const style = {
@@ -177,17 +179,20 @@ const Attempt = ({ word, handleNumberOfTries, isGuessed }) => {
       <div className={style.container}>
         <form onSubmit={null}>
           <div>
-            {inputs.map(input => (
-              <input
-                key={input.id}
-                className={determineStyle(input.valueIndex)}
-                onChange={e => handleInput(e.target.value, input.valueIndex)}
-                type='text'
-                maxLength={1}
-                id={input.id}
-                disabled={input.disabled}
-              />
-            ))}
+            <AutoTabProvider>
+              {inputs.map(input => (
+                <input
+                  key={input.id}
+                  className={determineStyle(input.valueIndex)}
+                  onChange={e => handleInput(e.target.value, input.valueIndex)}
+                  type='text'
+                  maxLength={1}
+                  id={input.id}
+                  disabled={input.disabled}
+                  tabbable='true'
+                />
+              ))}
+            </AutoTabProvider>
           </div>
         </form>
       </div>

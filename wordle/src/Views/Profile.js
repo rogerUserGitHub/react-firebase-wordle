@@ -17,21 +17,17 @@ import Select from '@mui/material/Select';
 import CountryList from '../Utils/CountryList';
 
 const style = {
-  bg: `h-screen w-screen p-7 bg-gradient-to-r from-[#aba6ff] to-[#42d9d6]`,
-  container: `flex-wrap bg-slate-100 max-w-[650px] m-auto rounded-md shadow-xl pb-200`,
-  container2: `bg-slate-250 max-w-[1000px] rounded-md shadow-xl pl-2`,
-  container3: `bg-slate-250 container max-w-[1000px]`,
-  container4: `max-w-[1000px] m-auto rounded-md pb-10 p-4`,
-  container5: `bg-slate-250 max-w-[1000px] m-auto rounded-md shadow-xl pb-4 p-4 pl-12`,
-  welcome: `text-2l font-bold text-center p-1`,
-  heading: `text-3xl font-bold text-center text-gray-800 p-1`,
-  avatar: `text-3xl font-bold text-center text-gray-800 p-1`,
-  avatarDialog: `p-5`,
-  form: `flex justify-between`,
-  input: `border w-full text-xl`,
-  button: `pt-8`,
-  logoutButton: `inline-flex items-center justify-center p-0.5  text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-grey-500 to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800`,
-  logOutButtonSpan: `px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0`,
+  bg: 'h-screen w-screen p-7 bg-gradient-to-r from-[#aba6ff] to-[#42d9d6]',
+  container:
+    'flex container bg-slate-100 max-w-[650px] m-auto rounded-md shadow-xl pb-200 ',
+  container2: 'bg-slate-250 max-w-auto rounded-md shadow-xl',
+  container4: 'max-w-auto m-auto rounded-md pb-10 p-4 ',
+  container5: 'bg-slate-250 rounded-md shadow-xl pb-4 p-4',
+  welcome: 'text-2xl font-bold text-center p-1',
+  heading: 'text-3xl font-bold text-center text-gray-800 p-1',
+  avatar: 'text-3xl font-bold text-center text-gray-800 p-1',
+  input: 'border w-full text-xl',
+  button: 'pt-8',
 };
 
 const Profile = () => {
@@ -50,9 +46,6 @@ const Profile = () => {
     setLanguage(profileData?.language);
     setAvatar(profileData?.avatar);
   };
-
-  console.log(user);
-  console.log(screenName);
 
   const renderProfileData = async () => {
     const docRef = doc(db, 'profile', user?.uid);
@@ -104,7 +97,7 @@ const Profile = () => {
               autoComplete='off'
             >
               <div className={style.container5}>
-                <ImageAvatars className={style.avatar} avatar={avatar} />
+                <ImageAvatars avatar={avatar} />
                 <AvatarDialog determineAvatar={determineAvatar} />
               </div>
               <TextField
@@ -127,6 +120,7 @@ const Profile = () => {
                 variant='filled'
                 helperText='age'
                 value={age}
+                type='number'
                 InputProps={{ inputProps: { min: 5, max: 99 } }}
                 onChange={e => setAge(e.target.value)}
               />

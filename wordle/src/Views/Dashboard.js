@@ -150,9 +150,9 @@ const Dashboard = () => {
     }
   };
 
-  //   /*
-  //    * side effects
-  //    */
+  /*
+   * side effects
+   */
   useEffect(() => {
     determineBestScore();
     determineBadgeAndProgress();
