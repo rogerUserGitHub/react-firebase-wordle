@@ -11,7 +11,7 @@ const Login = () => {
   const { signIn } = UserAuth();
 
   const style = {
-    bg: `h-screen w-screen p-4 bg-gradient-to-r from-blue-200 to-[#B0E0E6]`,
+    bg: `h-screen w-screen p-4 bg-gradient-to-r from-cyan-500 to-blue-500`,
     div: `max-w-[700px] mx-auto my-16 p-4`,
     h1: `text-2xl font-bold py-2`,
     emailPassword: `py-2 font-medium`,

@@ -69,65 +69,58 @@ const Dashboard = () => {
   };
 
   const fetchGameRecords = async () => {
-    const colRef = collection(db, 'gamerecords');
-    let gamerecordsOfLoggedInUser = [];
+    try {
+      const colRef = collection(db, 'gamerecords');
+      const snapshot = await getDocs(colRef);
 
-    await getDocs(colRef)
-      .then(snapshot => {
-        let gameRecords = [];
-        snapshot?.docs?.forEach(doc => {
-          gameRecords?.push({ ...doc?.data(), id: doc.id });
-        });
-        setNumberTotalGames(gameRecords?.length);
-        gameRecords?.forEach(record => {
-          if (record?.uid === user?.uid) {
-            gamerecordsOfLoggedInUser.push(record);
-          }
-        });
-        setGameRecords(gamerecordsOfLoggedInUser);
-      })
-      .catch(err => {
-        console.log(err.message);
+      let gameRecords = [];
+      let gamerecordsOfLoggedInUser = [];
+
+      snapshot.forEach(doc => {
+        gameRecords.push({ ...doc.data(), id: doc.id });
       });
+
+      setNumberTotalGames(gameRecords.length);
+
+      gameRecords.forEach(record => {
+        if (record.uid === user.uid) {
+          gamerecordsOfLoggedInUser.push(record);
+        }
+      });
+
+      setGameRecords(gamerecordsOfLoggedInUser);
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
-  const fetchRatings = () => {
-    const colRef = collection(db, 'ratings');
+  const fetchRatings = async () => {
+    try {
+      const colRef = collection(db, 'ratings');
+      const snapshot = await getDocs(colRef);
 
-    getDocs(colRef)
-      .then(snapshot => {
-        let gameRecords = [];
-        snapshot?.docs?.forEach(doc => {
-          gameRecords?.push({ ...doc?.data(), id: doc.id });
-        });
-        const sumAllRatings = gameRecords
-          ?.map(doc => doc.numberOfStars)
-          .reduce((acc, curr) => acc + curr, 0);
-        const average = sumAllRatings / gameRecords?.length;
-        setAverageRating(average);
-      })
-      .catch(err => {
-        console.log(err.message);
-      });
+      const gameRecords = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+      const sumAllRatings = gameRecords.reduce(
+        (acc, curr) => acc + curr.numberOfStars,
+        0
+      );
+      const average = sumAllRatings / gameRecords.length;
+      setAverageRating(average);
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   const determineBestScore = () => {
-    let bestScore = 6;
-    let countFinishedGames = 0;
-    let countUnfinishedGames = 0;
+    const finishedGames = gamerecords.filter(game => game.isFinished);
+    const bestScore = finishedGames.reduce(
+      (min, game) => Math.min(min, game.numberOfTries),
+      6
+    );
+    const winRatePerc = Math.floor((finishedGames.length / gamerecords.length) * 100);
 
-    for (let i = 0; i < gamerecords?.length; i++) {
-      if (bestScore > gamerecords[i]?.numberOfTries) {
-        bestScore = gamerecords[i]?.numberOfTries;
-      }
-      if (gamerecords[i].isFinished === true) {
-        countFinishedGames = countFinishedGames + 1;
-      } else {
-        countUnfinishedGames = countUnfinishedGames + 1;
-      }
-    }
     setBestScore(bestScore);
-    setWinRatePerc(Math.floor((countFinishedGames / gamerecords?.length) * 100));
+    setWinRatePerc(winRatePerc);
   };
 
   console.log(gamerecords);
@@ -230,7 +223,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-
       <Footer />
     </>
   );
