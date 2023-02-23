@@ -91,13 +91,16 @@ const Profile = () => {
             <Box
               component='form'
               sx={{
-                '& .MuiTextField-root': { m: 2, width: '45ch' },
+                '& .MuiTextField-root': { m: 'auto', width: '45ch', paddingTop: 4 },
+                textAlign: 'center',
               }}
               noValidate
               autoComplete='off'
             >
               <div className={style.container5}>
-                <ImageAvatars avatar={avatar} />
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <ImageAvatars avatar={avatar} />
+                </Box>
                 <AvatarDialog determineAvatar={determineAvatar} />
               </div>
               <TextField
@@ -125,50 +128,62 @@ const Profile = () => {
                 onChange={e => setAge(e.target.value)}
               />
             </Box>
-            <div className={style.container4}>
-              <FormControl sx={{ minWidth: 440, paddingRight: 4, paddingBottom: 5 }}>
-                <InputLabel id='demo-simple-select-autowidth-label'>Country</InputLabel>
-                <Select
-                  labelId='demo-simple-select-autowidth-label'
-                  id='demo-simple-select-autowidth'
-                  value={country}
-                  onChange={e => setCountry(e.target.value)}
-                  autoWidth
-                  label='Country'
-                >
-                  {CountryList.map(country => (
-                    <MenuItem key={country} value={country}>
-                      {country}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormControl sx={{ width: 400 }}>
-                <InputLabel id='demo-simple-select-autowidth-label'>
-                  WordJam Language
-                </InputLabel>
-                <Select
-                  labelId='demo-simple-select-autowidth-label'
-                  id='demo-simple-select-autowidth'
-                  value={language}
-                  onChange={e => setLanguage(e.target.value)}
-                  autoWidth
-                  label='WordJam Language'
-                >
-                  <MenuItem value={'Dutch'}>Dutch</MenuItem>
-                  <MenuItem value={'English'}>English</MenuItem>
-                </Select>
-              </FormControl>
-              <div className={style.button}>
-                <Button
-                  variant='outlined'
-                  onClick={updateProfile}
-                  disabled={screenName?.length > 25 || age > 99 || age < 6}
-                >
-                  Update profile
-                </Button>
+            <Box
+              component='form'
+              sx={{
+                '& .MuiTextField-root': { m: 'auto', width: '45ch' },
+                textAlign: 'center',
+              }}
+              noValidate
+              autoComplete='off'
+            >
+              <div className={style.container4}>
+                <FormControl sx={{ minWidth: 400, paddingBottom: 5 }}>
+                  <InputLabel id='demo-simple-select-autowidth-label'>
+                    Country
+                  </InputLabel>
+                  <Select
+                    labelId='demo-simple-select-autowidth-label'
+                    id='demo-simple-select-autowidth'
+                    value={country}
+                    onChange={e => setCountry(e.target.value)}
+                    autoWidth
+                    label='Country'
+                  >
+                    {CountryList.map(country => (
+                      <MenuItem key={country} value={country}>
+                        {country}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+                <FormControl sx={{ width: 400 }}>
+                  <InputLabel id='demo-simple-select-autowidth-label'>
+                    WordJam Language
+                  </InputLabel>
+                  <Select
+                    labelId='demo-simple-select-autowidth-label'
+                    id='demo-simple-select-autowidth'
+                    value={language}
+                    onChange={e => setLanguage(e.target.value)}
+                    autoWidth
+                    label='WordJam Language'
+                  >
+                    <MenuItem value={'Dutch'}>Dutch</MenuItem>
+                    <MenuItem value={'English'}>English</MenuItem>
+                  </Select>
+                </FormControl>
+                <div className={style.button}>
+                  <Button
+                    variant='outlined'
+                    onClick={updateProfile}
+                    disabled={screenName?.length > 25 || age > 99 || age < 6}
+                  >
+                    Update profile
+                  </Button>
+                </div>
               </div>
-            </div>
+            </Box>
           </div>
         </div>
       </div>
