@@ -3,7 +3,7 @@ import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import StarIcon from '@mui/icons-material/Star';
 import { db } from '../firebase.js';
-import { collection, addDoc, updateDoc, doc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { Timestamp } from '@firebase/firestore';
 import { UserAuth } from '../Context/AuthContext';
 
@@ -26,7 +26,7 @@ function getLabelText(value) {
 export default function HoverRating() {
   const { user } = UserAuth();
 
-  const [value, setValue] = useState(2);
+  const [value, setValue] = useState(0);
   const [hover, setHover] = useState(-1);
   const [userAlreadyRated, setUserAlreadyRated] = useState(false);
 
@@ -40,11 +40,14 @@ export default function HoverRating() {
         snapshot.docs.forEach(doc => {
           ratingData?.push({ ...doc?.data(), id: doc.id });
         });
+        console.log(ratingData);
         ratingData?.forEach(record => {
           if (record?.uid === user?.uid && record?.numberOfStars != null) {
             result.push(record);
             setUserAlreadyRated(true);
             setValue(record?.numberOfStars);
+            console.log(result);
+            console.log(value);
           }
         });
       })
@@ -53,12 +56,12 @@ export default function HoverRating() {
       });
   };
 
-  const creatRatingRecord = async () => {
+  const creatRatingRecord = async newvalue => {
     var timestamp = Timestamp.fromDate(new Date());
     await addDoc(collection(db, 'ratings'), {
       uid: user.uid,
       date: timestamp,
-      numberOfStars: value,
+      numberOfStars: newvalue,
     });
   };
 
@@ -83,8 +86,10 @@ export default function HoverRating() {
         precision={0.5}
         getLabelText={getLabelText}
         onChange={(event, newValue) => {
+          console.log(newValue);
+          console.log(event);
           setValue(newValue);
-          creatRatingRecord();
+          creatRatingRecord(newValue);
         }}
         onChangeActive={(event, newHover) => {
           setHover(newHover);

@@ -118,9 +118,12 @@ const Dashboard = () => {
       6
     );
     const winRatePerc = Math.floor((finishedGames.length / gamerecords.length) * 100);
-
     setBestScore(bestScore);
-    setWinRatePerc(winRatePerc);
+    if (winRatePerc) {
+      setWinRatePerc(winRatePerc);
+    } else {
+      setWinRatePerc(0);
+    }
   };
 
   console.log(gamerecords);
@@ -164,10 +167,12 @@ const Dashboard = () => {
         <div className={style.container}>
           <h3 className={style.heading}>Player Stats</h3>
           <div className='container mx-auto '>
-            <div className='grid grid-cols-1 md:grid-cols-2 '>
+            <div className='grid grid-cols-1 md:grid-cols-2'>
               <div className='bg-gray-800 p-14 '>
-                <Badge badge={badge} />
-                <Box sx={{ flexGrow: 1 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <Badge badge={badge} />
+                </Box>
+                <Box sx={{ justifyContent: 'center' }}>
                   <BorderLinearProgress
                     variant='determinate'
                     value={percentageProgress}
@@ -186,14 +191,21 @@ const Dashboard = () => {
                 <p className='text-[30px] text-blue-600 font-mono'>
                   <ScoreboardIcon /> best score
                 </p>
-                <p className='text-white font-mono font-bold'>{bestScore} / 6 tries</p>
+                {gamerecords.length > 0 ? (
+                  <p className='text-white font-mono font-bold'>
+                    {bestScore} / 6 tries
+                  </p>
+                ) : (
+                  <p className='text-white font-mono font-bold'>
+                    Play your first game!
+                  </p>
+                )}
                 <p className='text-[30px] text-blue-600 font-mono'>
                   <WorkspacePremiumIcon /> % win rate{' '}
                 </p>
                 <p className='text-white font-mono font-bold'>{winRatePerc}</p>
               </div>
             </div>
-
             <div className='container mx-auto'>
               <h3 className={style.heading}>App Stats</h3>
               <div className='grid grid-cols-1 md:grid-cols-1'>
