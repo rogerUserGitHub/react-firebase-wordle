@@ -47,17 +47,14 @@ const Homepage = () => {
 
   const getProfileData = async () => {
     const colRef = collection(db, 'profile');
-    console.log(colRef);
 
     const docRef = doc(db, 'profile', user?.uid);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      console.log(docSnap.data());
       setProfileData(docSnap?.data());
       setAvatar(docSnap?.data()?.avatar);
       setLanguage(docSnap?.data()?.language);
-      console.log('Document data:', docSnap.data());
     } else {
       console.log('No such document!');
     }
