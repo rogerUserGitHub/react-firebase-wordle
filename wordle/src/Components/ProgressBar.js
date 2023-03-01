@@ -16,10 +16,6 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 }));
 
 export default function CustomizedProgressBars({ value }) {
-  //   const [value, setValue] = useState();
-
-  console.log(value);
-
   useEffect(() => {}, [value]);
 
   return (

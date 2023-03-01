@@ -53,8 +53,6 @@ const Profile = () => {
 
     if (docSnap.exists()) {
       setValues(docSnap.data());
-
-      console.log('Document data:', docSnap.data());
     } else {
       console.log('No such document!');
     }

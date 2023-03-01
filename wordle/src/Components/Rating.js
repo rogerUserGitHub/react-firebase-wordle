@@ -40,14 +40,11 @@ export default function HoverRating() {
         snapshot.docs.forEach(doc => {
           ratingData?.push({ ...doc?.data(), id: doc.id });
         });
-        console.log(ratingData);
         ratingData?.forEach(record => {
           if (record?.uid === user?.uid && record?.numberOfStars != null) {
             result.push(record);
             setUserAlreadyRated(true);
             setValue(record?.numberOfStars);
-            console.log(result);
-            console.log(value);
           }
         });
       })
@@ -86,8 +83,6 @@ export default function HoverRating() {
         precision={0.5}
         getLabelText={getLabelText}
         onChange={(event, newValue) => {
-          console.log(newValue);
-          console.log(event);
           setValue(newValue);
           creatRatingRecord(newValue);
         }}

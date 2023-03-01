@@ -22,8 +22,6 @@ const SignUp = () => {
   const [userCreated, setUserCreated] = useState(false);
   const navigate = useNavigate();
 
-  console.log(user);
-
   const handleSubmit = async e => {
     e.preventDefault();
     setError('');
