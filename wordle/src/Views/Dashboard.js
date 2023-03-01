@@ -62,7 +62,6 @@ const Dashboard = () => {
 
     if (docSnap.exists()) {
       setValues(docSnap?.data());
-      console.log('Document data:', docSnap.data());
     } else {
       console.log('No such document!');
     }
@@ -126,11 +125,8 @@ const Dashboard = () => {
     }
   };
 
-  console.log(gamerecords);
-
   const determineBadgeAndProgress = () => {
     const numberGames = gamerecords.length;
-    console.log(numberGames);
     if (numberGames < 10) {
       setBadge('bronze');
       setPercentageProgress((numberGames / 10) * 100);
@@ -228,7 +224,7 @@ const Dashboard = () => {
                 <Rating />
               </div>
               <div className='p-4 bg-gray-200 text-gray-700'>
-                <p>Average Rating All Users</p>
+                <p>Average rating of all users</p>
                 <AverageRating average={averageRating} />
               </div>
             </div>
