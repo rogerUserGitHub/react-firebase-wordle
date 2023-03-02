@@ -216,17 +216,15 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <div className='container mx-auto'>
-            <h3 className={style.heading}>Rating</h3>
-            <div className='grid grid-cols-1 md:grid-cols-2'>
-              <div className='p-4 bg-gray-200 text-gray-700'>
-                <p>Your Rating</p>
-                <Rating />
-              </div>
-              <div className='p-4 bg-gray-200 text-gray-700'>
-                <p>Average rating of all users</p>
-                <AverageRating average={averageRating} />
-              </div>
+          <h3 className={style.heading}>Rating</h3>
+          <div className='grid grid-cols-1 md:grid-cols-2'>
+            <div className='p-4 bg-gray-200 text-gray-700'>
+              <p>Your Rating</p>
+              <Rating />
+            </div>
+            <div className='p-4 pb-20 bg-gray-200 text-gray-700'>
+              <p>Average rating of all users</p>
+              <AverageRating average={averageRating} />
             </div>
           </div>
         </div>

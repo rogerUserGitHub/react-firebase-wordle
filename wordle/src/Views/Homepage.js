@@ -10,8 +10,8 @@ import ResponsiveAppBar from '../Components/AppBar.js';
 
 const style = {
   bg: `h-[calc(100vh-100px)] overflow-auto p-7 bg-gradient-to-r from-[#aba6ff] to-[#42d9d6]`,
-  container: `bg-slate-100 max-w-[500px] w-full m-auto rounded-md shadow-xl p-4 flex flex-wrap justify-center`,
-  container2: `bg-slate-100 max-w-[500px] w-full m-auto rounded-md shadow-xl p-2 pt-2 mt-5 flex flex-col items-center`,
+  container: `bg-slate-100 max-w-[500px] w-full m-auto rounded-md shadow-xl p-4 md:p-30  justify-center pb-40 `,
+  container2: `bg-slate-100 max-w-[500px] w-full m-auto rounded-md shadow-xl p-4 md:p-20 pt-2 mt-5 mb-50`,
   welcome: `text-2l font-bold text-center p-1`,
   heading: `text-3xl font-bold text-center text-gray-800 p-1`,
   form: `flex justify-between`,

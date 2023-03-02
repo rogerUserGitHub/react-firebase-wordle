@@ -4,7 +4,7 @@ import { AutoTabProvider } from 'react-auto-tab';
 import Keyboard from './Keyboard';
 
 const style = {
-  container: `flex row pl-8 pt-1`,
+  container: `flex row pl-8 pt-1 pr-4`,
   inputContainer: `grid grid-cols-5 gap-2`,
   inputBox: `h-full w-full min-h-[20px] border p-3 border-gray-200 bg-black text-white text-3xl text-center`,
   inputBoxGreen: `h-full w-full min-h-[20px] border p-3 border-black-500 bg-green-500 text-black text-3xl text-center`,
@@ -115,7 +115,6 @@ const Attempt = ({ word, handleNumberOfTries, isGuessed }) => {
     let teller = 0;
 
     for (let i = 0; i < arrayOfLetters.length; i++) {
-      // teller required, otherwise word lenght will be out of bounds
       if (teller === 5) {
         teller = 0;
       }
