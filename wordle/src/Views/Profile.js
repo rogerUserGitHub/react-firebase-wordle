@@ -89,7 +89,11 @@ const Profile = () => {
             <Box
               component='form'
               sx={{
-                '& .MuiTextField-root': { m: 'auto', width: '45ch', paddingTop: 4 },
+                '& .MuiTextField-root': {
+                  m: 'auto',
+                  width: '80%',
+                  paddingTop: '2em',
+                },
                 textAlign: 'center',
               }}
               noValidate
@@ -101,30 +105,32 @@ const Profile = () => {
                 </Box>
                 <AvatarDialog determineAvatar={determineAvatar} />
               </div>
-              <TextField
-                disabled
-                id='filled-disabled'
-                helperText='email / username'
-                variant='filled'
-                value={user?.email}
-              />
-              <TextField
-                id='filled'
-                helperText='screen name'
-                variant='filled'
-                placeholder='screen name (max. 25 characters)'
-                value={screenName}
-                onChange={e => setScreenName(e.target.value)}
-              />
-              <TextField
-                id='standard-helperText'
-                variant='filled'
-                helperText='age'
-                value={age}
-                type='number'
-                InputProps={{ inputProps: { min: 5, max: 99 } }}
-                onChange={e => setAge(e.target.value)}
-              />
+              <Box sx={{ maxWidth: 'auto' }}>
+                <TextField
+                  disabled
+                  id='filled-disabled'
+                  helperText='email / username'
+                  variant='filled'
+                  value={user?.email}
+                />
+                <TextField
+                  id='filled'
+                  helperText='screen name'
+                  variant='filled'
+                  placeholder='screen name (max. 25 characters)'
+                  value={screenName}
+                  onChange={e => setScreenName(e.target.value)}
+                />
+                <TextField
+                  id='standard-helperText'
+                  variant='filled'
+                  helperText='age'
+                  value={age}
+                  type='number'
+                  InputProps={{ inputProps: { min: 5, max: 99 } }}
+                  onChange={e => setAge(e.target.value)}
+                />
+              </Box>
             </Box>
             <Box
               component='form'
@@ -136,7 +142,7 @@ const Profile = () => {
               autoComplete='off'
             >
               <div className={style.container4}>
-                <FormControl sx={{ minWidth: 400, paddingBottom: 5 }}>
+                <FormControl sx={{ width: '85%', paddingBottom: 5 }}>
                   <InputLabel id='demo-simple-select-autowidth-label'>
                     Country
                   </InputLabel>
@@ -155,7 +161,7 @@ const Profile = () => {
                     ))}
                   </Select>
                 </FormControl>
-                <FormControl sx={{ width: 400 }}>
+                <FormControl sx={{ width: '85%' }}>
                   <InputLabel id='demo-simple-select-autowidth-label'>
                     WordJam Language
                   </InputLabel>

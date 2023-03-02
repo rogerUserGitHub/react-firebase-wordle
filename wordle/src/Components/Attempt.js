@@ -4,14 +4,12 @@ import { AutoTabProvider } from 'react-auto-tab';
 import Keyboard from './Keyboard';
 
 const style = {
-  row: `flex`,
-  text: `ml-2 cursor-pointer`,
-  button: `cursor-pointer flex items-center`,
   container: `flex row pl-8 pt-1`,
-  inputBox: `h-20 w-20 border p-3 border-gray-200 bg-black text-white text-3xl text-center`,
-  inputBoxGreen: `h-20 w-20 border p-3 border-black-500 bg-green-500 text-black text-3xl text-center`,
-  inputBoxRed: `h-20 w-20 border p-3 border-black-500 bg-red-500 text-black text-3xl text-center`,
-  inputBoxOrange: `h-20 w-20 border p-3 border-black-500 bg-orange-500 text-black text-3xl text-center`,
+  inputContainer: `grid grid-cols-5 gap-2`,
+  inputBox: `h-full w-full min-h-[20px] border p-3 border-gray-200 bg-black text-white text-3xl text-center`,
+  inputBoxGreen: `h-full w-full min-h-[20px] border p-3 border-black-500 bg-green-500 text-black text-3xl text-center`,
+  inputBoxRed: `h-full w-full min-h-[20px] border p-3 border-black-500 bg-red-500 text-black text-3xl text-center`,
+  inputBoxOrange: `h-full w-full min-h-[20px] border p-3 border-black-500 bg-orange-500 text-black text-3xl text-center`,
 };
 
 const Attempt = ({ word, handleNumberOfTries, isGuessed }) => {
@@ -178,21 +176,21 @@ const Attempt = ({ word, handleNumberOfTries, isGuessed }) => {
     <>
       <div className={style.container}>
         <form onSubmit={null}>
-          <div>
-            <AutoTabProvider>
-              {inputs.map(input => (
-                <input
-                  key={input.id}
-                  className={determineStyle(input.valueIndex)}
-                  onChange={e => handleInput(e.target.value, input.valueIndex)}
-                  type='text'
-                  maxLength={1}
-                  id={input.id}
-                  disabled={input.disabled}
-                  tabbable='true'
-                />
-              ))}
-            </AutoTabProvider>
+          <div className={style.inputContainer}>
+            {/* <AutoTabProvider> */}
+            {inputs.map(input => (
+              <input
+                key={input.id}
+                className={determineStyle(input.valueIndex)}
+                onChange={e => handleInput(e.target.value, input.valueIndex)}
+                type='text'
+                maxLength={1}
+                id={input.id}
+                disabled={input.disabled}
+                tabbable='true'
+              />
+            ))}
+            {/* </AutoTabProvider> */}
           </div>
         </form>
       </div>
