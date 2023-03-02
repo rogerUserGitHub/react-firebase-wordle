@@ -9,7 +9,7 @@ import { Timestamp } from '@firebase/firestore';
 import ResponsiveAppBar from '../Components/AppBar.js';
 
 const style = {
-  bg: `h-screen w-screen p-7 bg-gradient-to-r from-[#aba6ff] to-[#42d9d6]`,
+  bg: `h-[calc(100vh-100px)] overflow-auto p-7 bg-gradient-to-r from-[#aba6ff] to-[#42d9d6]`,
   container: `bg-slate-100 max-w-[500px] w-full m-auto rounded-md shadow-xl p-4 flex flex-wrap justify-center`,
   container2: `bg-slate-100 max-w-[500px] w-full m-auto rounded-md shadow-xl p-2 pt-2 mt-5 flex flex-col items-center`,
   welcome: `text-2l font-bold text-center p-1`,
@@ -107,23 +107,21 @@ const Homepage = () => {
   return (
     <>
       <ResponsiveAppBar avatar={avatar} language={language} logout={logout} />
-      <div style={{ overflowY: 'overflow-auto', height: '100vh' }}>
-        <div className={style.bg}>
-          <div className={style.container}>
-            <h2 className={style.welcome}>
-              Welcome{' '}
-              {profileData?.screenName !== null
-                ? profileData?.screenName
-                : profileData?.email}
-            </h2>
+      <div className={style.bg}>
+        <div className={style.container}>
+          <h2 className={style.welcome}>
+            Welcome{' '}
+            {profileData?.screenName !== null
+              ? profileData?.screenName
+              : profileData?.email}
+          </h2>
 
-            <Attempt
-              word={word}
-              handleNumberOfTries={handleNumberOfTries}
-              isGuessed={handleGuess}
-              isFinished={handleFinish}
-            />
-          </div>
+          <Attempt
+            word={word}
+            handleNumberOfTries={handleNumberOfTries}
+            isGuessed={handleGuess}
+            isFinished={handleFinish}
+          />
         </div>
       </div>
       <DialogWindow isGuessed={isGuessed} numberOfTries={numberOfTries} />

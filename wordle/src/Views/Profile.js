@@ -17,9 +17,9 @@ import Select from '@mui/material/Select';
 import CountryList from '../Utils/CountryList';
 
 const style = {
-  bg: 'h-screen w-screen p-7 bg-gradient-to-r from-[#aba6ff] to-[#42d9d6]',
+  bg: 'h-[calc(100vh-100px)] overflow-auto p-7 bg-gradient-to-r from-[#aba6ff] to-[#42d9d6]',
   container:
-    'flex container bg-slate-100 max-w-[650px] m-auto rounded-md shadow-xl pb-200 ',
+    'flex container bg-slate-100 max-w-[450px] m-auto rounded-md shadow-xl pb-200 ',
   container2: 'bg-slate-250 max-w-auto rounded-md shadow-xl',
   container4: 'max-w-auto m-auto rounded-md pb-10 p-4 ',
   container5: 'bg-slate-250 rounded-md shadow-xl pb-4 p-4',
