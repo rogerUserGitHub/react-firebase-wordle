@@ -4,12 +4,12 @@ import { AutoTabProvider } from 'react-auto-tab';
 import Keyboard from './Keyboard';
 
 const style = {
-  container: `flex row pl-8 pt-1 pr-4`,
+  container: `flex row pl-8 pt-1 pr-8`,
   inputContainer: `grid grid-cols-5 gap-2`,
-  inputBox: `h-full w-full min-h-[20px] border p-3 border-gray-200 bg-black text-white text-3xl text-center`,
-  inputBoxGreen: `h-full w-full min-h-[20px] border p-3 border-black-500 bg-green-500 text-black text-3xl text-center`,
-  inputBoxRed: `h-full w-full min-h-[20px] border p-3 border-black-500 bg-red-500 text-black text-3xl text-center`,
-  inputBoxOrange: `h-full w-full min-h-[20px] border p-3 border-black-500 bg-orange-500 text-black text-3xl text-center`,
+  inputBox: `h-full w-full min-h-[20px] border p-3 border-gray-200 bg-black text-white text-3xl text-center rounded-lg`,
+  inputBoxGreen: `h-full w-full min-h-[20px] border p-3 border-black-500 bg-green-500 text-black text-3xl text-center rounded-lg`,
+  inputBoxRed: `h-full w-full min-h-[20px] border p-3 border-black-500 bg-red-500 text-black text-3xl text-center rounded-lg`,
+  inputBoxOrange: `h-full w-full min-h-[20px] border p-3 border-black-500 bg-orange-500 text-black text-3xl text-center rounded-lg`,
 };
 
 const Attempt = ({ word, handleNumberOfTries, isGuessed }) => {
